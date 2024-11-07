@@ -66,11 +66,8 @@
         args="compressed in:=$(arg camera_namespace)/image raw out:=r$(arg camera_namespace)/image_raw"/>
 
     <node pkg="tf" type="static_transform_publisher" name="camera_frame_to_raspicam_frame"
-<<<<<<< HEAD
       args="0.015 0 0.052 -1.57 0 -1.57 link5 camera 10" />
-=======
-      args="0.070 0 0.052 -1.57 0 -1.57 link5 camera 10" />
->>>>>>> 7b49a4a927dbbc8072de7b9e37f33910484c2434
+
 
       <include file="$(find ar_track_alvar)/launch/pr2_indiv_no_kinect.launch">
         <arg name="marker_size" value="$(arg user_marker_size)" />
