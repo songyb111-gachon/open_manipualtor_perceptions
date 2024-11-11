@@ -23,7 +23,7 @@ OpenManipulatorPickandPlace::OpenManipulatorPickandPlace()
   priv_node_handle_("~"),
   mode_state_(0),
   demo_count_(0),
-  pick_ar_id_(0)
+  pick_ar_id_(3)
 {
   present_joint_angle_.resize(NUM_OF_JOINT_AND_TOOL, 0.0);
   present_kinematic_position_.resize(3, 0.0);
@@ -279,9 +279,9 @@ void OpenManipulatorPickandPlace::demoSequence()
   case 7: // place the box
     kinematics_position.push_back(present_kinematic_position_.at(0));
     kinematics_position.push_back(present_kinematic_position_.at(1));
-    if (pick_ar_id_ == 0)  kinematics_position.push_back(present_kinematic_position_.at(2)-0.076);
-    else if (pick_ar_id_ == 1)  kinematics_position.push_back(present_kinematic_position_.at(2)-0.041);
-    else if (pick_ar_id_ == 2)  kinematics_position.push_back(present_kinematic_position_.at(2)-0.006);
+    if (pick_ar_id_ == 3)  kinematics_position.push_back(present_kinematic_position_.at(2)-0.076);
+    else if (pick_ar_id_ == 4)  kinematics_position.push_back(present_kinematic_position_.at(2)-0.041);
+    else if (pick_ar_id_ == 5)  kinematics_position.push_back(present_kinematic_position_.at(2)-0.006);
     kinematics_orientation.push_back(0.74);
     kinematics_orientation.push_back(0.00);
     kinematics_orientation.push_back(0.66);
@@ -313,11 +313,11 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back( 0.70);
     setJointSpacePath(joint_name_, joint_angle, 1.5);
     demo_count_ = 1;
-    if (pick_ar_id_ == 0) pick_ar_id_ = 1;
-    else if (pick_ar_id_ == 1) pick_ar_id_ = 2;
-    else if (pick_ar_id_ == 2)
+    if (pick_ar_id_ == 3) pick_ar_id_ = 4;
+    else if (pick_ar_id_ == 4) pick_ar_id_ = 5;
+    else if (pick_ar_id_ == 5)
     {
-      pick_ar_id_ = 0;
+      pick_ar_id_ = 3;
       demo_count_ = 0;
       mode_state_ = DEMO_STOP;
     }
