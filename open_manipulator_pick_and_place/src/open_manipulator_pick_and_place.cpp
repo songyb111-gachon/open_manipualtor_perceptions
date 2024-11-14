@@ -170,11 +170,10 @@ void OpenManipulatorPickandPlace::publishCallback(const ros::TimerEvent&)
   if (mode_state_ == HOME_POSE)
   {
     std::vector<double> joint_angle;
-
+    joint_angle.push_back( 0.01);
+    joint_angle.push_back(-0.80);
     joint_angle.push_back( 0.00);
-    joint_angle.push_back(-1.05);
-    joint_angle.push_back( 0.35);
-    joint_angle.push_back( 0.70);
+    joint_angle.push_back( 1.90);
     setJointSpacePath(joint_name_, joint_angle, 2.0);
 
     std::vector<double> gripper_value;
