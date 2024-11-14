@@ -240,9 +240,15 @@ void OpenManipulatorPickandPlace::demoSequence()
     {
       if (ar_marker_pose.at(i).id == pick_ar_id_)
       {
-        kinematics_position.push_back(ar_marker_pose.at(i).position[0]);
+        printf("Trying to pick object with AR Marker ID: %d\n", ar_marker_pose.at(i).id);
+        printf("Object Position - X: %.3lf, Y: %.3lf, Z: %.3lf\n",
+               ar_marker_pose.at(i).position[0],
+               ar_marker_pose.at(i).position[1],
+               ar_marker_pose.at(i).position[2]);
+
+        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02);
         kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-        kinematics_position.push_back(0.05);
+        kinematics_position.push_back(0.00);
         kinematics_orientation.push_back(0.74);
         kinematics_orientation.push_back(0.00);
         kinematics_orientation.push_back(0.66);
