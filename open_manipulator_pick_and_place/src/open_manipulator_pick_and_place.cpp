@@ -39,7 +39,7 @@ OpenManipulatorPickandPlace::OpenManipulatorPickandPlace()
 
 OpenManipulatorPickandPlace::~OpenManipulatorPickandPlace()
 {
-  if (ros::isStarted()) 
+  if (ros::isStarted())
   {
     ros::shutdown();
     ros::waitForShutdown();
@@ -170,10 +170,11 @@ void OpenManipulatorPickandPlace::publishCallback(const ros::TimerEvent&)
   if (mode_state_ == HOME_POSE)
   {
     std::vector<double> joint_angle;
-    joint_angle.push_back( 0.01);
-    joint_angle.push_back(-0.80);
+
     joint_angle.push_back( 0.00);
-    joint_angle.push_back( 1.90);
+    joint_angle.push_back(-1.05);
+    joint_angle.push_back( 0.35);
+    joint_angle.push_back( 0.70);
     setJointSpacePath(joint_name_, joint_angle, 2.0);
 
     std::vector<double> gripper_value;
@@ -234,26 +235,25 @@ void OpenManipulatorPickandPlace::demoSequence()
     setToolControl(gripper_value);
     demo_count_ ++;
     break;
-    case 3: // pick the box
-      for (int i = 0; i < ar_marker_pose.size(); i ++)
+  case 3: // pick the box
+    for (int i = 0; i < ar_marker_pose.size(); i ++)
+    {
+      if (ar_marker_pose.at(i).id == pick_ar_id_)
       {
-        if (ar_marker_pose.at(i).id == pick_ar_id_)
-        {
-          kinematics_position.push_back(ar_marker_pose.at(i).position[0]);
-          kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-          kinematics_position.push_back(0.008);
-          kinematics_orientation.push_back(0.74);
-          kinematics_orientation.push_back(0.00);
-          kinematics_orientation.push_back(0.66);
-          kinematics_orientation.push_back(0.00);
-          setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
-          demo_count_ ++;
-          return;
-        }
+        kinematics_position.push_back(ar_marker_pose.at(i).position[0]);
+        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
+        kinematics_position.push_back(0.009);
+        kinematics_orientation.push_back(0.74);
+        kinematics_orientation.push_back(0.00);
+        kinematics_orientation.push_back(0.66);
+        kinematics_orientation.push_back(0.00);
+        setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+        demo_count_ ++;
+        return;
       }
+    }
     demo_count_ = 2;  // If the detection fails.
     break;
-
   case 4: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.push_back(-0.010);
