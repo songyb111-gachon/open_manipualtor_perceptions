@@ -236,37 +236,46 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_ ++;
     break;
 
-    case 3: // pick the box for marker 0
+case 3: // pick the box for marker 0
+{
+    bool marker_found = false;
+    //kinematics_position.clear();
+    //kinematics_orientation.clear();
+    for (int i = 0; i < ar_marker_pose.size(); i++) // 반복문 추가
     {
-      bool marker_found = false;
-      for (int i = 0; i < ar_marker_pose.size(); i++) // 반복문 추가
-      {
         if (ar_marker_pose.at(i).id == 0) // ID 0 마커 확인
         {
-          marker_found = true;
+            marker_found = true;
 
-          kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
-          kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
-          kinematics_position.push_back(0.018);                                   // Z 좌표 (고정값)
+            // 1단계: X와 Y 값을 먼저 맞춤 (현재 Z 값 유지)
+            kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
+            kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
+            kinematics_position.push_back(present_kinematic_position_.at(2));      // 현재 Z 값 유지
 
-          kinematics_orientation.push_back(0.74); // w 값
-          kinematics_orientation.push_back(0.00); // x 값
-          kinematics_orientation.push_back(0.66); // y 값
-          kinematics_orientation.push_back(0.00); // z 값
+            kinematics_orientation.push_back(0.74); // w 값
+            kinematics_orientation.push_back(0.00); // x 값
+            kinematics_orientation.push_back(0.66); // y 값
+            kinematics_orientation.push_back(0.00); // z 값
 
-          setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0); // 경로 설정
-          demo_count_++; // 다음 단계로 진행
-          break; // 찾았으므로 반복문 종료
+            setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
+
+            // 2단계: Z 값을 나중에 맞춤
+            kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+            setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+
+            demo_count_++; // 다음 단계로 진행
+            break; // 찾았으므로 반복문 종료
         }
-      }
+    }
 
-      if (!marker_found)
-      {
+    if (!marker_found)
+    {
         printf("Marker 0 not detected.\n");
         demo_count_ = 2; // 이전 단계로 돌아가 다시 시도
-      }
     }
-    break;
+}
+break;
+
 
   case 4: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
@@ -343,16 +352,22 @@ void OpenManipulatorPickandPlace::demoSequence()
         {
           marker_found = true;
 
+          // 1단계: X와 Y 값을 먼저 맞춤 (현재 Z 값 유지)
           kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
           kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
-          kinematics_position.push_back(0.018);                                   // Z 좌표 (고정값)
+          kinematics_position.push_back(present_kinematic_position_.at(2));      // 현재 Z 값 유지
 
           kinematics_orientation.push_back(0.74); // w 값
           kinematics_orientation.push_back(0.00); // x 값
           kinematics_orientation.push_back(0.66); // y 값
           kinematics_orientation.push_back(0.00); // z 값
 
-          setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0); // 경로 설정
+          setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
+
+          // 2단계: Z 값을 나중에 맞춤
+          kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+          setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+
           demo_count_++; // 다음 단계로 진행
           break; // 찾았으므로 반복문 종료
         }
@@ -360,12 +375,11 @@ void OpenManipulatorPickandPlace::demoSequence()
 
       if (!marker_found)
       {
-        printf("Marker 1 not detected.\n");
+        printf("Marker 0 not detected.\n");
         demo_count_ = 2; // 이전 단계로 돌아가 다시 시도
       }
     }
     break;
-
 
   case 13: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
@@ -438,20 +452,26 @@ void OpenManipulatorPickandPlace::demoSequence()
       bool marker_found = false;
       for (int i = 0; i < ar_marker_pose.size(); i++) // 반복문 추가
       {
-        if (ar_marker_pose.at(i).id == 2) // ID 2 마커 확인
+        if (ar_marker_pose.at(i).id == 2) // ID 1 마커 확인
         {
           marker_found = true;
 
+          // 1단계: X와 Y 값을 먼저 맞춤 (현재 Z 값 유지)
           kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
           kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
-          kinematics_position.push_back(0.018);                                   // Z 좌표 (고정값)
+          kinematics_position.push_back(present_kinematic_position_.at(2));      // 현재 Z 값 유지
 
           kinematics_orientation.push_back(0.74); // w 값
           kinematics_orientation.push_back(0.00); // x 값
           kinematics_orientation.push_back(0.66); // y 값
           kinematics_orientation.push_back(0.00); // z 값
 
-          setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0); // 경로 설정
+          setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
+
+          // 2단계: Z 값을 나중에 맞춤
+          kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+          setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+
           demo_count_++; // 다음 단계로 진행
           break; // 찾았으므로 반복문 종료
         }
@@ -459,11 +479,12 @@ void OpenManipulatorPickandPlace::demoSequence()
 
       if (!marker_found)
       {
-        printf("Marker 2 not detected.\n");
+        printf("Marker 0 not detected.\n");
         demo_count_ = 2; // 이전 단계로 돌아가 다시 시도
       }
     }
     break;
+
 
   case 22: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
