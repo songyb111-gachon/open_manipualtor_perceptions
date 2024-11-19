@@ -257,21 +257,21 @@ void OpenManipulatorPickandPlace::demoSequence()
             // Adjust position offsets based on AR Marker ID
             if (ar_marker_pose.at(i).id == 0)
             {
-                kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.01);
+                kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02);
                 kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.05);
+                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.01);
             }
             else if (ar_marker_pose.at(i).id == 1)
             {
-                kinematics_position.push_back(ar_marker_pose.at(i).position[0] - 0.01);
+                kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02);
                 kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.02);
+                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.01);
             }
             else if (ar_marker_pose.at(i).id == 2)
             {
                 kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02);
                 kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.02);
+                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.01);
             }
             else
             {
