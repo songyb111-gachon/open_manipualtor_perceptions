@@ -366,7 +366,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_ = 1;
     if (pick_ar_id_ == 0) pick_ar_id_ = 1;
     else if (pick_ar_id_ == 1) pick_ar_id_ = 2;
-    else if (pick_ar_id_ == 3)
+    else if (pick_ar_id_ == 2)
     {
       pick_ar_id_ = 0;
       demo_count_ = 0;
