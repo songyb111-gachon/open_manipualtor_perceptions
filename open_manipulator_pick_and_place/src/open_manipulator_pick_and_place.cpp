@@ -213,32 +213,27 @@ void OpenManipulatorPickandPlace::demoSequence()
 
   switch (demo_count_)
   {
-  case 0: // home pose
-    joint_angle.clear();
-    joint_angle.push_back( 0.00);
+    case 0: // home pose
+      joint_angle.push_back( 0.00);
     joint_angle.push_back(-1.05);
     joint_angle.push_back( 0.35);
     joint_angle.push_back( 0.70);
     setJointSpacePath(joint_name_, joint_angle, 1.5);
-    demo_count_++;
+    demo_count_ ++;
     break;
-
-  case 1: // initial pose
-    joint_angle.clear();
-    joint_angle.push_back( 0.01);
+    case 1: // initial pose
+      joint_angle.push_back( 0.01);
     joint_angle.push_back(-0.80);
     joint_angle.push_back( 0.00);
     joint_angle.push_back( 1.90);
     setJointSpacePath(joint_name_, joint_angle, 1.0);
-    demo_count_++;
+    demo_count_ ++;
     break;
-
-  case 2: // wait & open the gripper
-    setJointSpacePath(joint_name_, present_joint_angle_, 3.0);
-    gripper_value.clear();
+    case 2: // wait & open the gripper
+      setJointSpacePath(joint_name_, present_joint_angle_, 3.0);
     gripper_value.push_back(0.010);
     setToolControl(gripper_value);
-    demo_count_++;
+    demo_count_ ++;
     break;
 
   case 3: // pick the box for marker 0
