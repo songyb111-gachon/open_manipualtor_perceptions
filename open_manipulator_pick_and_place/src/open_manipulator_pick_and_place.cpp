@@ -234,75 +234,24 @@ void OpenManipulatorPickandPlace::demoSequence()
     setToolControl(gripper_value);
     demo_count_ ++;
     break;
-  case 3: // pick the box
-    if (ar_marker_pose.size() == 0)
-    {
-        printf("No AR markers detected. Returning to detection.\n");
-        demo_count_ = 2; // Retry detection
-        break;
-    }
-
-    for (int i = 0; i < ar_marker_pose.size(); i++)
-    {
-        printf("Processing Marker ID: %d\n", ar_marker_pose.at(i).id);
-
+    case 3: // pick the box
+      for (int i = 0; i < ar_marker_pose.size(); i ++)
+      {
         if (ar_marker_pose.at(i).id == pick_ar_id_)
         {
-            printf("Trying to pick object with AR Marker ID: %d\n", ar_marker_pose.at(i).id);
-            printf("Object Position - X: %.3lf, Y: %.3lf, Z: %.3lf\n",
-                   ar_marker_pose.at(i).position[0],
-                   ar_marker_pose.at(i).position[1],
-                   ar_marker_pose.at(i).position[2]);
-
-            // Adjust position offsets based on AR Marker ID
-            if (ar_marker_pose.at(i).id == 0)
-            {
-                kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.01);
-            }
-            else if (ar_marker_pose.at(i).id == 1)
-            {
-                kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.01);
-            }
-            else if (ar_marker_pose.at(i).id == 2)
-            {
-                kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-                kinematics_position.push_back(ar_marker_pose.at(i).position[2] - 0.01);
-            }
-            else
-            {
-                printf("Unhandled AR Marker ID: %d\n", ar_marker_pose.at(i).id);
-                demo_count_ = 2; // Retry detection
-                return;
-            }
-
-            // Common orientation settings for all markers
-            kinematics_orientation.push_back(0.74);
-            kinematics_orientation.push_back(0.00);
-            kinematics_orientation.push_back(0.66);
-            kinematics_orientation.push_back(0.00);
-
-            if (setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0))
-            {
-                printf("Successfully set task space path for Marker ID: %d\n", ar_marker_pose.at(i).id);
-            }
-            else
-            {
-                printf("Failed to set task space path for Marker ID: %d\n", ar_marker_pose.at(i).id);
-            }
-
-            demo_count_++;
-            return;
+          kinematics_position.push_back(ar_marker_pose.at(i).position[0]);
+          kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
+          kinematics_position.push_back(0.008);
+          kinematics_orientation.push_back(0.74);
+          kinematics_orientation.push_back(0.00);
+          kinematics_orientation.push_back(0.66);
+          kinematics_orientation.push_back(0.00);
+          setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+          demo_count_ ++;
+          return;
         }
-    }
-
-    // If no matching marker ID was found
-    printf("No matching AR Marker ID found. Returning to detection.\n");
-    demo_count_ = 2; // Retry detection
+      }
+    demo_count_ = 2;  // If the detection fails.
     break;
 
   case 4: // wait & grip
