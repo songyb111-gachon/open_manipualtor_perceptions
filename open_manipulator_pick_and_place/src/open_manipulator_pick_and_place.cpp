@@ -272,7 +272,7 @@ void OpenManipulatorPickandPlace::demoSequence()
   case 4: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
-    gripper_value.push_back(-0.010);
+    gripper_value.push_back(-0.005);
     setToolControl(gripper_value);
     demo_count_++;
     break;
@@ -387,7 +387,7 @@ void OpenManipulatorPickandPlace::demoSequence()
   case 13: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
-    gripper_value.push_back(-0.010);
+    gripper_value.push_back(-0.005);
     setToolControl(gripper_value);
     demo_count_++;
     break;
@@ -502,7 +502,7 @@ void OpenManipulatorPickandPlace::demoSequence()
   case 22: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
-    gripper_value.push_back(-0.010);
+    gripper_value.push_back(-0.005);
     setToolControl(gripper_value);
     demo_count_++;
     break;
