@@ -307,7 +307,7 @@ void OpenManipulatorPickandPlace::demoSequence()
 
   case 4: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
-    gripper_value.push_back(-0.001);
+    gripper_value.push_back(-0.010);
     setToolControl(gripper_value);
     demo_count_ ++;
     break;
