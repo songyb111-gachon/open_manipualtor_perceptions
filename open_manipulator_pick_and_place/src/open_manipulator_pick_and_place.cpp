@@ -243,22 +243,24 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_orientation.clear();
     for (int i = 0; i < ar_marker_pose.size(); i++)
     {
-      if (ar_marker_pose.at(i).id == 0)
-      {
-        marker_found = true;
-
-        kinematics_position.push_back(ar_marker_pose.at(i).position[0]);
-        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-        kinematics_position.push_back(0.018);
-        kinematics_orientation.push_back(0.74);
-        kinematics_orientation.push_back(0.00);
-        kinematics_orientation.push_back(0.66);
-        kinematics_orientation.push_back(0.00);
-        setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
-
-        demo_count_++;
-        break;
-      }
+      if (ar_marker_pose.at(i).id == 0) // ID 0 마커 확인
+        {
+            marker_found = true;
+            // 1단계: X와 Y 값을 먼저 맞춤 (현재 Z 값 유지)
+            kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
+            kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
+            kinematics_position.push_back(present_kinematic_position_.at(2));      // 현재 Z 값 유지
+            kinematics_orientation.push_back(0.74); // w 값
+            kinematics_orientation.push_back(0.00); // x 값
+            kinematics_orientation.push_back(0.66); // y 값
+            kinematics_orientation.push_back(0.00); // z 값
+            setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
+            // 2단계: Z 값을 나중에 맞춤
+            kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+            setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+            demo_count_++; // 다음 단계로 진행
+            break; // 찾았으므로 반복문 종료
+        }
     }
 
     if (!marker_found)
@@ -361,18 +363,20 @@ void OpenManipulatorPickandPlace::demoSequence()
       if (ar_marker_pose.at(i).id == 1)
       {
         marker_found = true;
-
-        kinematics_position.push_back(ar_marker_pose.at(i).position[0]);
-        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-        kinematics_position.push_back(0.018);
-        kinematics_orientation.push_back(0.74);
-        kinematics_orientation.push_back(0.00);
-        kinematics_orientation.push_back(0.66);
-        kinematics_orientation.push_back(0.00);
+        // 1단계: X와 Y 값을 먼저 맞춤 (현재 Z 값 유지)
+        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
+        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
+        kinematics_position.push_back(present_kinematic_position_.at(2));      // 현재 Z 값 유지
+        kinematics_orientation.push_back(0.74); // w 값
+        kinematics_orientation.push_back(0.00); // x 값
+        kinematics_orientation.push_back(0.66); // y 값
+        kinematics_orientation.push_back(0.00); // z 값
         setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
-
-        demo_count_++;
-        break;
+        // 2단계: Z 값을 나중에 맞춤
+        kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+        setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+        demo_count_++; // 다음 단계로 진행
+        break; // 찾았으므로 반복문 종료
       }
     }
 
@@ -476,18 +480,20 @@ void OpenManipulatorPickandPlace::demoSequence()
       if (ar_marker_pose.at(i).id == 2)
       {
         marker_found = true;
-
-        kinematics_position.push_back(ar_marker_pose.at(i).position[0]);
-        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);
-        kinematics_position.push_back(0.018);
-        kinematics_orientation.push_back(0.74);
-        kinematics_orientation.push_back(0.00);
-        kinematics_orientation.push_back(0.66);
-        kinematics_orientation.push_back(0.00);
+        // 1단계: X와 Y 값을 먼저 맞춤 (현재 Z 값 유지)
+        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
+        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
+        kinematics_position.push_back(present_kinematic_position_.at(2));      // 현재 Z 값 유지
+        kinematics_orientation.push_back(0.74); // w 값
+        kinematics_orientation.push_back(0.00); // x 값
+        kinematics_orientation.push_back(0.66); // y 값
+        kinematics_orientation.push_back(0.00); // z 값
         setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
-
-        demo_count_++;
-        break;
+        // 2단계: Z 값을 나중에 맞춤
+        kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+        setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+        demo_count_++; // 다음 단계로 진행
+        break; // 찾았으므로 반복문 종료
       }
     }
 
