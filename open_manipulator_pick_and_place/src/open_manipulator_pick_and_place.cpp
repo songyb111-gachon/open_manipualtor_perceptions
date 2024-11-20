@@ -383,7 +383,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     if (!marker_found)
     {
       printf("Marker 0 not detected.\n");
-      demo_count_ = 2;
+      demo_count_ = 11;
     }
   }
   break;
@@ -500,7 +500,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     if (!marker_found)
     {
       printf("Marker 0 not detected.\n");
-      demo_count_ = 2;
+      demo_count_ = 20;
     }
   }
   break;
