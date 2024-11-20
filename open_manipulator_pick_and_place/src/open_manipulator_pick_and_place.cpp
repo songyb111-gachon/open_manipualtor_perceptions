@@ -256,7 +256,7 @@ void OpenManipulatorPickandPlace::demoSequence()
             kinematics_orientation.push_back(0.00); // z 값
             setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
             // 2단계: Z 값을 나중에 맞춤
-            kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+            kinematics_position.at(2) = 0.024; // Z 값을 고정된 값으로 이동
             setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
             demo_count_++; // 다음 단계로 진행
             break; // 찾았으므로 반복문 종료
@@ -299,19 +299,25 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-  case 7: // place the box
+    case 7: // place the box
     kinematics_position.clear();
     kinematics_orientation.clear();
-    kinematics_position.push_back(present_kinematic_position_.at(0));
-    kinematics_position.push_back(present_kinematic_position_.at(1));
-    kinematics_position.push_back(present_kinematic_position_.at(2) - 0.076);
-    kinematics_orientation.push_back(0.74);
-    kinematics_orientation.push_back(0.00);
-    kinematics_orientation.push_back(0.66);
-    kinematics_orientation.push_back(0.00);
+
+    // 수정된 위치 값
+    kinematics_position.push_back(0.015); // X 좌표
+    kinematics_position.push_back(0.102); // Y 좌표
+    kinematics_position.push_back(0.011); // Z 좌표
+
+    // 기존 오리엔테이션 값 유지
+    kinematics_orientation.push_back(0.74); // w 값
+    kinematics_orientation.push_back(0.00); // x 값
+    kinematics_orientation.push_back(0.66); // y 값
+    kinematics_orientation.push_back(0.00); // z 값
+
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
     break;
+
 
   case 8: // wait & place
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
@@ -373,7 +379,7 @@ void OpenManipulatorPickandPlace::demoSequence()
         kinematics_orientation.push_back(0.00); // z 값
         setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
         // 2단계: Z 값을 나중에 맞춤
-        kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+        kinematics_position.at(2) = 0.024; // Z 값을 고정된 값으로 이동
         setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
         demo_count_++; // 다음 단계로 진행
         break; // 찾았으므로 반복문 종료
@@ -490,7 +496,7 @@ void OpenManipulatorPickandPlace::demoSequence()
         kinematics_orientation.push_back(0.00); // z 값
         setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
         // 2단계: Z 값을 나중에 맞춤
-        kinematics_position.at(2) = 0.018; // Z 값을 고정된 값으로 이동
+        kinematics_position.at(2) = 0.024; // Z 값을 고정된 값으로 이동
         setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
         demo_count_++; // 다음 단계로 진행
         break; // 찾았으므로 반복문 종료
