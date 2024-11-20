@@ -708,6 +708,11 @@ void OpenManipulatorPickandPlace::printText()
          present_kinematic_position_.at(0),
          present_kinematic_position_.at(1),
          present_kinematic_position_.at(2));
+  printf("Present Kinematics Orientation W: %.3lf X: %.3lf Y: %.3lf Z: %.3lf\n",
+         kinematics_orientation.at(0),
+         kinematics_orientation.at(1),
+         kinematics_orientation.at(2),
+         kinematics_orientation.at(3));
   printf("-----------------------------\n");
 
   if (!ar_marker_pose.empty())
@@ -727,6 +732,7 @@ void OpenManipulatorPickandPlace::printText()
     printf("No AR marker detected.\n");
   }
 }
+
 
 
 bool OpenManipulatorPickandPlace::kbhit()
