@@ -143,6 +143,11 @@ void OpenManipulatorPickandPlace::kinematicsPoseCallback(const open_manipulator_
   temp_position.push_back(msg->pose.position.z);
 
   present_kinematic_position_ = temp_position;
+
+  present_kinematic_orientation_.push_back(msg->pose.orientation.w);
+  present_kinematic_orientation_.push_back(msg->pose.orientation.x);
+  present_kinematic_orientation_.push_back(msg->pose.orientation.y);
+  present_kinematic_orientation_.push_back(msg->pose.orientation.z);
 }
 
 void OpenManipulatorPickandPlace::arPoseMarkerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr &msg)
@@ -550,8 +555,8 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_orientation.clear();
 
     // 수정된 위치 값
-    kinematics_position.push_back(0.015); // X 좌표
-    kinematics_position.push_back(0.102); // Y 좌표
+    kinematics_position.push_back(present_kinematic_position_.at(0));
+    kinematics_position.push_back(present_kinematic_position_.at(1));
     kinematics_position.push_back(0.088); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
@@ -720,11 +725,21 @@ void OpenManipulatorPickandPlace::printText()
          present_joint_angle_.at(1),
          present_joint_angle_.at(2),
          present_joint_angle_.at(3));
+
   printf("Present Tool Position: %.3lf\n", present_joint_angle_.at(4));
+
   printf("Present Kinematics Position X: %.3lf Y: %.3lf Z: %.3lf\n",
          present_kinematic_position_.at(0),
          present_kinematic_position_.at(1),
          present_kinematic_position_.at(2));
+
+  printf("Present Kinematics Orientation W: %.3lf X: %.3lf Y: %.3lf Z: %.3lf\n",
+         present_kinematic_orientation_.at(0),
+         present_kinematic_orientation_.at(1),
+         present_kinematic_orientation_.at(2),
+         present_kinematic_orientation_.at(3));
+
+  printf("-----------------------------\n");
 
   if (!ar_marker_pose.empty())
   {

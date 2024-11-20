@@ -1,22 +1,4 @@
-﻿/*******************************************************************************
-* Copyright 2018 ROBOTIS CO., LTD.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
-
-/* Authors: Darby Lim, Hye-Jong KIM, Ryan Shim, Yong-Ho Na */
-
-#ifndef OPEN_MANIPULATOR_PICK_AND_PLACE_H
+﻿#ifndef OPEN_MANIPULATOR_PICK_AND_PLACE_H
 #define OPEN_MANIPULATOR_PICK_AND_PLACE_H
 
 #include <ros/ros.h>
@@ -57,8 +39,9 @@ class OpenManipulatorPickandPlace
   ros::Subscriber open_manipulator_kinematics_pose_sub_;
   ros::Subscriber ar_pose_marker_sub_;
 
-  std::vector<double> present_joint_angle_;
-  std::vector<double> present_kinematic_position_;
+  std::vector<double> present_joint_angle_;            // 현재 조인트 각도
+  std::vector<double> present_kinematic_position_;     // 현재 위치
+  std::vector<double> present_kinematic_orientation_;  // 현재 오리엔테이션
   std::vector<std::string> joint_name_;
   bool open_manipulator_is_moving_;
   std::vector<ArMarker> ar_marker_pose;
