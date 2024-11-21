@@ -222,7 +222,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_ ++;
     break;
     case 1: // initial pose
-      joint_angle.push_back( 0.01);
+      joint_angle.push_back( 0.51);
     joint_angle.push_back(-0.80);
     joint_angle.push_back( 0.00);
     joint_angle.push_back( 1.90);
