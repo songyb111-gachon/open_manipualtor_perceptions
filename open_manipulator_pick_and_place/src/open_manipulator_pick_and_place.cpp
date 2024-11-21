@@ -252,10 +252,10 @@ void OpenManipulatorPickandPlace::demoSequence()
           kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
           // 오리엔테이션 설정
-          //kinematics_orientation.push_back(0.74); // w 값
-          //kinematics_orientation.push_back(0.00); // x 값
-          //kinematics_orientation.push_back(0.66); // y 값
-          //kinematics_orientation.push_back(0.00); // z 값
+          kinematics_orientation.push_back(0.74); // w 값
+          kinematics_orientation.push_back(0.00); // x 값
+          kinematics_orientation.push_back(0.66); // y 값
+          kinematics_orientation.push_back(0.00); // z 값
 
           setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
           demo_count_++; // 다음 단계로 진행
@@ -309,10 +309,10 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_position.push_back(0.033); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
-    //kinematics_orientation.push_back(0.74); // w 값
-    //kinematics_orientation.push_back(0.00); // x 값
-    //kinematics_orientation.push_back(0.66); // y 값
-    //kinematics_orientation.push_back(0.00); // z 값
+    kinematics_orientation.push_back(0.74); // w 값
+    kinematics_orientation.push_back(0.00); // x 값
+    kinematics_orientation.push_back(0.66); // y 값
+    Kinematics_orientation.push_back(0.00); // z 값
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
@@ -375,10 +375,10 @@ void OpenManipulatorPickandPlace::demoSequence()
         kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
         // 오리엔테이션 설정
-        //kinematics_orientation.push_back(0.74); // w 값
-        //kinematics_orientation.push_back(0.00); // x 값
-        //kinematics_orientation.push_back(0.66); // y 값
-        //kinematics_orientation.push_back(0.00); // z 값
+        kinematics_orientation.push_back(0.74); // w 값
+        kinematics_orientation.push_back(0.00); // x 값
+        kinematics_orientation.push_back(0.66); // y 값
+        kinematics_orientation.push_back(0.00); // z 값
 
         setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
         demo_count_++; // 다음 단계로 진행
@@ -432,10 +432,10 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_position.push_back(0.056); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
-    //kinematics_orientation.push_back(0.74); // w 값
-    //kinematics_orientation.push_back(0.00); // x 값
-    //kinematics_orientation.push_back(0.66); // y 값
-    //kinematics_orientation.push_back(0.00); // z 값
+    kinematics_orientation.push_back(0.74); // w 값
+    kinematics_orientation.push_back(0.00); // x 값
+    kinematics_orientation.push_back(0.66); // y 값
+    kinematics_orientation.push_back(0.00); // z 값
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
@@ -498,10 +498,10 @@ void OpenManipulatorPickandPlace::demoSequence()
         kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
         // 오리엔테이션 설정
-        //kinematics_orientation.push_back(0.74); // w 값
-        //kinematics_orientation.push_back(0.00); // x 값
-        //kinematics_orientation.push_back(0.66); // y 값
-        //kinematics_orientation.push_back(0.00); // z 값
+        kinematics_orientation.push_back(0.74); // w 값
+        kinematics_orientation.push_back(0.00); // x 값
+        kinematics_orientation.push_back(0.66); // y 값
+        kinematics_orientation.push_back(0.00); // z 값
 
         setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
         demo_count_++; // 다음 단계로 진행
@@ -555,10 +555,10 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_position.push_back(0.096); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
-    //kinematics_orientation.push_back(0.74); // w 값
-    //kinematics_orientation.push_back(0.00); // x 값
-    //kinematics_orientation.push_back(0.66); // y 값
-    //kinematics_orientation.push_back(0.00); // z 값
+    kinematics_orientation.push_back(0.74); // w 값
+    kinematics_orientation.push_back(0.00); // x 값
+    kinematics_orientation.push_back(0.66); // y 값
+    kinematics_orientation.push_back(0.00); // z 값
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
