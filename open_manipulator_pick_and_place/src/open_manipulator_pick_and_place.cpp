@@ -552,7 +552,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     // 수정된 위치 값
     kinematics_position.push_back(0.015); // X 좌표
     kinematics_position.push_back(0.090); // Y 좌표
-    kinematics_position.push_back(0.144); // Z 좌표
+    kinematics_position.push_back(0.156); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
     kinematics_orientation.push_back(0.74); // w 값
@@ -593,7 +593,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back(-1.05);
     joint_angle.push_back( 0.35);
     joint_angle.push_back( 0.70);
-    setJointSpacePath(joint_name_, joint_angle, 0.1);
+    setJointSpacePath(joint_name_, joint_angle, 0.01);
     demo_count_ = 1;
     mode_state_ = DEMO_STOP;
     break;
