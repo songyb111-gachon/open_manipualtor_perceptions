@@ -306,7 +306,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     // 수정된 위치 값
     kinematics_position.push_back(0.015); // X 좌표
     kinematics_position.push_back(0.102); // Y 좌표
-    kinematics_position.push_back(0.033); // Z 좌표
+    kinematics_position.push_back(0.044); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
     kinematics_orientation.push_back(0.74); // w 값
@@ -578,7 +578,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_orientation.clear();
     kinematics_position.push_back(present_kinematic_position_.at(0));
     kinematics_position.push_back(present_kinematic_position_.at(1));
-    kinematics_position.push_back(0.135);
+    kinematics_position.push_back(0.160);
     kinematics_orientation.push_back(0.74);
     kinematics_orientation.push_back(0.00);
     kinematics_orientation.push_back(0.66);
