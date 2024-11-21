@@ -305,7 +305,7 @@ void OpenManipulatorPickandPlace::demoSequence()
 
     // 수정된 위치 값
     kinematics_position.push_back(0.015); // X 좌표
-    kinematics_position.push_back(0.123); // Y 좌표
+    kinematics_position.push_back(0.132); // Y 좌표
     kinematics_position.push_back(0.065); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
@@ -551,7 +551,7 @@ void OpenManipulatorPickandPlace::demoSequence()
 
     // 수정된 위치 값
     kinematics_position.push_back(0.015); // X 좌표
-    kinematics_position.push_back(0.102); // Y 좌표
+    kinematics_position.push_back(0.090); // Y 좌표
     kinematics_position.push_back(0.144); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
