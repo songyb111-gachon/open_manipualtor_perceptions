@@ -593,7 +593,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back(-1.05);
     joint_angle.push_back( 0.35);
     joint_angle.push_back( 0.70);
-    setJointSpacePath(joint_name_, joint_angle, 0.6);
+    setJointSpacePath(joint_name_, joint_angle, 0.1);
     demo_count_ = 1;
     mode_state_ = DEMO_STOP;
     break;
