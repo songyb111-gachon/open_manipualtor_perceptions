@@ -312,7 +312,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_orientation.push_back(0.74); // w 값
     kinematics_orientation.push_back(0.00); // x 값
     kinematics_orientation.push_back(0.66); // y 값
-    Kinematics_orientation.push_back(0.00); // z 값
+    kinematics_orientation.push_back(0.00); // z 값
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
