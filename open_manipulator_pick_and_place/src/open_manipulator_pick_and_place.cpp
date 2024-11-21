@@ -247,7 +247,7 @@ void OpenManipulatorPickandPlace::demoSequence()
         {
           marker_found = true;
           // X, Y, Z 값을 설정
-          kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
+          kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.01); // X 좌표
           kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
           kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
@@ -266,7 +266,7 @@ void OpenManipulatorPickandPlace::demoSequence()
       if (!marker_found)
       {
         printf("Marker 0 not detected.\n");
-        demo_count_ = 2;
+        demo_count_ = 1;
       }
     }
   break;
@@ -274,7 +274,7 @@ void OpenManipulatorPickandPlace::demoSequence()
   case 4: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
-    gripper_value.push_back(-0.005);
+    gripper_value.push_back(-0.008);
     setToolControl(gripper_value);
     demo_count_++;
     break;
@@ -370,7 +370,7 @@ void OpenManipulatorPickandPlace::demoSequence()
       {
         marker_found = true;
         // X, Y, Z 값을 설정
-        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
+        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.01); // X 좌표
         kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
         kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
@@ -389,7 +389,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     if (!marker_found)
     {
       printf("Marker 2 not detected.\n");
-      demo_count_ = 11;
+      demo_count_ = 10;
     }
   }
   break;
@@ -397,7 +397,7 @@ void OpenManipulatorPickandPlace::demoSequence()
   case 13: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
-    gripper_value.push_back(-0.005);
+    gripper_value.push_back(-0.008);
     setToolControl(gripper_value);
     demo_count_++;
     break;
@@ -493,7 +493,7 @@ void OpenManipulatorPickandPlace::demoSequence()
       {
         marker_found = true;
         // X, Y, Z 값을 설정
-        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.02); // X 좌표
+        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.01); // X 좌표
         kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
         kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
@@ -512,7 +512,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     if (!marker_found)
     {
       printf("Marker 3 not detected.\n");
-      demo_count_ = 20;
+      demo_count_ = 19;
     }
   }
   break;
@@ -520,7 +520,7 @@ void OpenManipulatorPickandPlace::demoSequence()
   case 22: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 2.0);
     gripper_value.clear();
-    gripper_value.push_back(-0.005);
+    gripper_value.push_back(-0.008);
     setToolControl(gripper_value);
     demo_count_++;
     break;
@@ -550,8 +550,8 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_orientation.clear();
 
     // 수정된 위치 값
-    kinematics_position.push_back(present_kinematic_position_.at(0));
-    kinematics_position.push_back(present_kinematic_position_.at(1));
+    kinematics_position.push_back(0.015); // X 좌표
+    kinematics_position.push_back(0.102); // Y 좌표
     kinematics_position.push_back(0.096); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
@@ -562,6 +562,7 @@ void OpenManipulatorPickandPlace::demoSequence()
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
+
     break;
 
   case 26: // wait & place
