@@ -240,6 +240,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     {
       bool marker_found = false;
       kinematics_position.clear();
+      kinematics_orientation.clear();
       for (int i = 0; i < ar_marker_pose.size(); i++)
       {
         if (ar_marker_pose.at(i).id == 0) // ID 0 마커 확인
@@ -249,6 +250,12 @@ void OpenManipulatorPickandPlace::demoSequence()
           kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
           kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
           kinematics_position.push_back(0.033);                                  // Z 좌표 고정
+
+          // 오리엔테이션 설정
+          kinematics_orientation.push_back(0.74); // w 값
+          kinematics_orientation.push_back(0.00); // x 값
+          kinematics_orientation.push_back(0.66); // y 값
+          kinematics_orientation.push_back(0.00); // z 값
 
           setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
           demo_count_++; // 다음 단계로 진행
@@ -294,11 +301,18 @@ void OpenManipulatorPickandPlace::demoSequence()
 
     case 7: // place the box
     kinematics_position.clear();
+    kinematics_orientation.clear();
 
     // 수정된 위치 값
     kinematics_position.push_back(0.015); // X 좌표
     kinematics_position.push_back(0.127); // Y 좌표
     kinematics_position.push_back(0.065); // Z 좌표
+
+    // 기존 오리엔테이션 값 유지
+    kinematics_orientation.push_back(0.74); // w 값
+    kinematics_orientation.push_back(0.00); // x 값
+    kinematics_orientation.push_back(0.66); // y 값
+    kinematics_orientation.push_back(0.00); // z 값
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
@@ -315,9 +329,14 @@ void OpenManipulatorPickandPlace::demoSequence()
 
   case 9: // move up after place the box
     kinematics_position.clear();
+    kinematics_orientation.clear();
     kinematics_position.push_back(0.015); // X 좌표
     kinematics_position.push_back(0.102); // Y 좌표
     kinematics_position.push_back(0.170);
+    kinematics_orientation.push_back(0.74);
+    kinematics_orientation.push_back(0.00);
+    kinematics_orientation.push_back(0.66);
+    kinematics_orientation.push_back(0.00);
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
     break;
@@ -344,6 +363,7 @@ void OpenManipulatorPickandPlace::demoSequence()
   {
     bool marker_found = false;
     kinematics_position.clear();
+    kinematics_orientation.clear();
     for (int i = 0; i < ar_marker_pose.size(); i++)
     {
       if (ar_marker_pose.at(i).id == 1)
@@ -353,6 +373,12 @@ void OpenManipulatorPickandPlace::demoSequence()
         kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
         kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
         kinematics_position.push_back(0.033);                                  // Z 좌표 고정
+
+        // 오리엔테이션 설정
+        kinematics_orientation.push_back(0.74); // w 값
+        kinematics_orientation.push_back(0.00); // x 값
+        kinematics_orientation.push_back(0.66); // y 값
+        kinematics_orientation.push_back(0.00); // z 값
 
         setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
         demo_count_++; // 다음 단계로 진행
@@ -398,12 +424,18 @@ void OpenManipulatorPickandPlace::demoSequence()
 
   case 16: // place the box
     kinematics_position.clear();
+    kinematics_orientation.clear();
 
     // 수정된 위치 값
     kinematics_position.push_back(0.015); // X 좌표
     kinematics_position.push_back(0.102); // Y 좌표
     kinematics_position.push_back(0.085); // Z 좌표
 
+    // 기존 오리엔테이션 값 유지
+    kinematics_orientation.push_back(0.74); // w 값
+    kinematics_orientation.push_back(0.00); // x 값
+    kinematics_orientation.push_back(0.66); // y 값
+    kinematics_orientation.push_back(0.00); // z 값
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
@@ -420,9 +452,14 @@ void OpenManipulatorPickandPlace::demoSequence()
 
   case 18: // move up after place the box
     kinematics_position.clear();
+    kinematics_orientation.clear();
     kinematics_position.push_back(present_kinematic_position_.at(0));
     kinematics_position.push_back(present_kinematic_position_.at(1));
     kinematics_position.push_back(0.170);
+    kinematics_orientation.push_back(0.74);
+    kinematics_orientation.push_back(0.00);
+    kinematics_orientation.push_back(0.66);
+    kinematics_orientation.push_back(0.00);
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
     break;
@@ -449,6 +486,7 @@ void OpenManipulatorPickandPlace::demoSequence()
   {
     bool marker_found = false;
     kinematics_position.clear();
+    kinematics_orientation.clear();
     for (int i = 0; i < ar_marker_pose.size(); i++)
     {
       if (ar_marker_pose.at(i).id == 2)
@@ -458,6 +496,12 @@ void OpenManipulatorPickandPlace::demoSequence()
         kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
         kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
         kinematics_position.push_back(0.033);                                  // Z 좌표 고정
+
+        // 오리엔테이션 설정
+        kinematics_orientation.push_back(0.74); // w 값
+        kinematics_orientation.push_back(0.00); // x 값
+        kinematics_orientation.push_back(0.66); // y 값
+        kinematics_orientation.push_back(0.00); // z 값
 
         setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
         demo_count_++; // 다음 단계로 진행
@@ -503,11 +547,18 @@ void OpenManipulatorPickandPlace::demoSequence()
 
   case 25: // place the box
     kinematics_position.clear();
+    kinematics_orientation.clear();
 
     // 수정된 위치 값
     kinematics_position.push_back(0.019); // X 좌표
     kinematics_position.push_back(0.105); // Y 좌표
     kinematics_position.push_back(0.105); // Z 좌표
+
+    // 기존 오리엔테이션 값 유지
+    kinematics_orientation.push_back(0.74); // w 값
+    kinematics_orientation.push_back(0.00); // x 값
+    kinematics_orientation.push_back(0.66); // y 값
+    kinematics_orientation.push_back(0.00); // z 값
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
@@ -524,9 +575,14 @@ void OpenManipulatorPickandPlace::demoSequence()
 
   case 27: // move up after place the box
     kinematics_position.clear();
+    kinematics_orientation.clear();
     kinematics_position.push_back(present_kinematic_position_.at(0));
     kinematics_position.push_back(present_kinematic_position_.at(1));
     kinematics_position.push_back(0.170);
+    kinematics_orientation.push_back(0.74);
+    kinematics_orientation.push_back(0.00);
+    kinematics_orientation.push_back(0.66);
+    kinematics_orientation.push_back(0.00);
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
     demo_count_++;
     break;
