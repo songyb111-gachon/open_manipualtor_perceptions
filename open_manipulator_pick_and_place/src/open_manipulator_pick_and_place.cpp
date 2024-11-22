@@ -585,8 +585,8 @@ void OpenManipulatorPickandPlace::demoSequence()
     break;
 
 
-    case 30 // initial pose
-      joint_angle.push_back( 0.01);
+    case 30: // initial pose
+    joint_angle.push_back( 0.01);
     joint_angle.push_back(-0.80);
     joint_angle.push_back( 0.00);
     joint_angle.push_back( 1.90);
@@ -710,9 +710,6 @@ void OpenManipulatorPickandPlace::printText()
       break;
     case 26:
       printf("Opening gripper to release box\n");
-      break;
-    case 26:
-      printf("Placing the box (Marker ID: 2)\n");
       break;
     case 27:
       printf("Opening gripper to release box\n");
