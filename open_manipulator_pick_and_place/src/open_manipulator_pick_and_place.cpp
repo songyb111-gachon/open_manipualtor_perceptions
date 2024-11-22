@@ -598,6 +598,73 @@ void OpenManipulatorPickandPlace::demoSequence()
     mode_state_ = DEMO_STOP;
     break;
 
+    case 29: //I
+    joint_angle.clear();
+    joint_angle.push_back( -0.063);
+    joint_angle.push_back( 0.061);
+    joint_angle.push_back( -1.488);
+    joint_angle.push_back( -0.012);
+    setJointSpacePath(joint_name_, joint_angle, 1);
+    demo_count_ = 1;
+    mode_state_ = DEMO_STOP;
+    break;
+
+    case 30: //R
+    joint_angle.clear();
+    joint_angle.push_back( -0.015);
+    joint_angle.push_back( 0.030);
+    joint_angle.push_back( 0.779);
+    joint_angle.push_back( 1.759);
+    setJointSpacePath(joint_name_, joint_angle, 1);
+    demo_count_ = 1;
+    mode_state_ = DEMO_STOP;
+    break;
+
+    case 31: //A
+    joint_angle.clear();
+    joint_angle.push_back( -0.028);
+    joint_angle.push_back( 0.296);
+    joint_angle.push_back( 0.442);
+    joint_angle.push_back( 0.437);
+    setJointSpacePath(joint_name_, joint_angle, 1);
+    demo_count_ = 1;
+    mode_state_ = DEMO_STOP;
+    break;
+
+    case 32: //S
+    joint_angle.clear();
+    joint_angle.push_back( 0.000);
+    joint_angle.push_back( -1.085);
+    joint_angle.push_back( 0.508);
+    joint_angle.push_back( -0.341);
+    setJointSpacePath(joint_name_, joint_angle, 1);
+    demo_count_ = 1;
+    mode_state_ = DEMO_STOP;
+    break;
+
+    case 33: //C
+    joint_angle.clear();
+    joint_angle.push_back( -0.031);
+    joint_angle.push_back( -1.235);
+    joint_angle.push_back( 0.032);
+    joint_angle.push_back( 1.119);
+    setJointSpacePath(joint_name_, joint_angle, 1);
+    demo_count_ = 1;
+    mode_state_ = DEMO_STOP;
+    break;
+
+    case 34: // home pose
+    joint_angle.clear();
+    joint_angle.push_back( 0.00);
+    joint_angle.push_back(-1.05);
+    joint_angle.push_back( 0.35);
+    joint_angle.push_back( 0.70);
+    setJointSpacePath(joint_name_, joint_angle, 0.01);
+    demo_count_ = 1;
+    mode_state_ = DEMO_STOP;
+    break;
+
+
   default:
     demo_count_++;
     break;
@@ -703,6 +770,24 @@ void OpenManipulatorPickandPlace::printText()
       printf("Moving up after placing the box\n");
       break;
     case 28:
+      printf("Returning to home pose\n");
+      break;
+    case 29:
+      printf("I\n");
+      break;
+    case 30:
+      printf("R\n");
+      break;
+    case 31:
+      printf("A\n");
+      break;
+    case 32:
+      printf("S\n");
+      break;
+    case 33:
+      printf("C\n");
+      break;
+    case 34:
       printf("Returning to home pose\n");
       break;
     default:
