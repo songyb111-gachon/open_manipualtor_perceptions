@@ -429,7 +429,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     // 수정된 위치 값
     kinematics_position.push_back(0.015); // X 좌표
     kinematics_position.push_back(0.107); // Y 좌표
-    kinematics_position.push_back(0.086); // Z 좌표
+    kinematics_position.push_back(0.088); // Z 좌표
 
     // 기존 오리엔테이션 값 유지
     kinematics_orientation.push_back(0.74); // w 값
@@ -607,7 +607,15 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 30: //R
+    case 30: // wait & place
+    setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
+    gripper_value.clear();
+    gripper_value.push_back(0.010);
+    setToolControl(gripper_value);
+    demo_count_++;
+    break;
+
+    case 31: //R
     joint_angle.clear();
     joint_angle.push_back( -0.015);
     joint_angle.push_back( 0.030);
@@ -617,7 +625,25 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 31: //A
+    case 32: // wait & place
+    setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
+    gripper_value.clear();
+    gripper_value.push_back(0.010);
+    setToolControl(gripper_value);
+    demo_count_++;
+    break;
+
+    case 33: //임시
+    joint_angle.clear();
+    joint_angle.push_back( 0.00);
+    joint_angle.push_back(-1.05);
+    joint_angle.push_back( 0.35);
+    joint_angle.push_back( 0.70);
+    setJointSpacePath(joint_name_, joint_angle, 0.1);
+    demo_count_++;
+    break;
+
+    case 34: //A
     joint_angle.clear();
     joint_angle.push_back( -0.032);
     joint_angle.push_back( 0.078);
@@ -627,7 +653,15 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 32: //S
+    case 35: // wait & place
+    setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
+    gripper_value.clear();
+    gripper_value.push_back(0.010);
+    setToolControl(gripper_value);
+    demo_count_++;
+    break;
+
+    case 36: //S
     joint_angle.clear();
     joint_angle.push_back( 0.000);
     joint_angle.push_back( -1.085);
@@ -637,7 +671,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 33: //C
+    case 37: //C
     joint_angle.clear();
     joint_angle.push_back( -0.031);
     joint_angle.push_back( -1.235);
@@ -647,7 +681,15 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 34: // home pose
+    case 38: // wait & place
+    setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
+    gripper_value.clear();
+    gripper_value.push_back(0.010);
+    setToolControl(gripper_value);
+    demo_count_++;
+    break;
+
+    case 39: // home pose
     joint_angle.clear();
     joint_angle.push_back( 0.00);
     joint_angle.push_back(-1.05);
@@ -770,18 +812,33 @@ void OpenManipulatorPickandPlace::printText()
       printf("I\n");
       break;
     case 30:
-      printf("R\n");
+      printf("wait\n");
       break;
     case 31:
-      printf("A\n");
+      printf("R\n");
       break;
     case 32:
-      printf("S\n");
+      printf("wait\n");
       break;
     case 33:
-      printf("C\n");
+      printf("wait\n");
       break;
     case 34:
+      printf("A\n");
+      break;
+    case 35:
+      printf("wait\n");
+      break;
+    case 36:
+      printf("S\n");
+      break;
+    case 37:
+      printf("wait\n");
+      break;
+    case 38:
+      printf("C\n");
+      break;
+    case 39:
       printf("Returning to home pose\n");
       break;
     default:
