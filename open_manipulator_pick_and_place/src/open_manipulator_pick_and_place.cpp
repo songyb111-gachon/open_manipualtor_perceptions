@@ -578,7 +578,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     kinematics_orientation.clear();
     kinematics_position.push_back(present_kinematic_position_.at(0));
     kinematics_position.push_back(present_kinematic_position_.at(1));
-    kinematics_position.push_back(0.170);
+    kinematics_position.push_back(0.180);
     kinematics_orientation.push_back(0.74);
     kinematics_orientation.push_back(0.00);
     kinematics_orientation.push_back(0.66);
