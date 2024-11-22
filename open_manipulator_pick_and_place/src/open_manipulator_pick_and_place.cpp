@@ -594,8 +594,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back( 0.35);
     joint_angle.push_back( 0.70);
     setJointSpacePath(joint_name_, joint_angle, 0.01);
-    demo_count_ = 1;
-    mode_state_ = DEMO_STOP;
+    demo_count_++;
     break;
 
     case 29: //I
@@ -605,8 +604,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back( -1.488);
     joint_angle.push_back( -0.012);
     setJointSpacePath(joint_name_, joint_angle, 1);
-    demo_count_ = 1;
-    mode_state_ = DEMO_STOP;
+    demo_count_++;
     break;
 
     case 30: //R
@@ -616,8 +614,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back( 0.779);
     joint_angle.push_back( 1.759);
     setJointSpacePath(joint_name_, joint_angle, 1);
-    demo_count_ = 1;
-    mode_state_ = DEMO_STOP;
+    demo_count_++;
     break;
 
     case 31: //A
@@ -627,8 +624,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back( 0.442);
     joint_angle.push_back( 0.437);
     setJointSpacePath(joint_name_, joint_angle, 1);
-    demo_count_ = 1;
-    mode_state_ = DEMO_STOP;
+    demo_count_++;
     break;
 
     case 32: //S
@@ -638,8 +634,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back( 0.508);
     joint_angle.push_back( -0.341);
     setJointSpacePath(joint_name_, joint_angle, 1);
-    demo_count_ = 1;
-    mode_state_ = DEMO_STOP;
+    demo_count_++;
     break;
 
     case 33: //C
@@ -649,8 +644,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     joint_angle.push_back( 0.032);
     joint_angle.push_back( 1.119);
     setJointSpacePath(joint_name_, joint_angle, 1);
-    demo_count_ = 1;
-    mode_state_ = DEMO_STOP;
+    demo_count_++;
     break;
 
     case 34: // home pose
