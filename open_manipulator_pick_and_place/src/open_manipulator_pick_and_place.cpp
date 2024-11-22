@@ -619,10 +619,10 @@ void OpenManipulatorPickandPlace::demoSequence()
 
     case 31: //A
     joint_angle.clear();
-    joint_angle.push_back( -0.028);
-    joint_angle.push_back( 0.296);
-    joint_angle.push_back( 0.442);
-    joint_angle.push_back( 0.437);
+    joint_angle.push_back( -0.032);
+    joint_angle.push_back( 0.078);
+    joint_angle.push_back( 0.894);
+    joint_angle.push_back( 0.021);
     setJointSpacePath(joint_name_, joint_angle, 1);
     demo_count_++;
     break;
