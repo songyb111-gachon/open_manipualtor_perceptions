@@ -32,9 +32,9 @@
 #include "sensor_msgs/JointState.h"
 
 #define NUM_OF_JOINT_AND_TOOL 5
-#define HOME_POSE   1
-#define DEMO_START  2
-#define DEMO_STOP   3
+#define HOME_POSE   'q'
+#define DEMO_START  'w'
+#define DEMO_STOP   'e'
 
 typedef struct _ArMarker
 {
@@ -91,4 +91,4 @@ class OpenManipulatorPickandPlace
   bool kbhit();
 };
 
-#endif //OPEN_MANIPULATOR_PICK_AND_PLACE_H
+#endif //OPEN_MANIPULATOR_final_H

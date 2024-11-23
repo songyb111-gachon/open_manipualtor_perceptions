@@ -193,14 +193,14 @@ void OpenManipulatorPickandPlace::publishCallback(const ros::TimerEvent&)
 }
 void OpenManipulatorPickandPlace::setModeState(char ch)
 {
-  if (ch == '1')
+  if (ch == 'q')
     mode_state_ = HOME_POSE;
-  else if (ch == '2')
+  else if (ch == 'w')
   {
     mode_state_ = DEMO_START;
     demo_count_ = 0;
   }
-  else if (ch == '3')
+  else if (ch == 'e')
     mode_state_ = DEMO_STOP;
 }
 
