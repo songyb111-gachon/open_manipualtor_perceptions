@@ -2,7 +2,7 @@
 # Set minimum required version of cmake, project name and compile options
 ################################################################################
 cmake_minimum_required(VERSION 2.8.3)
-project(open_manipulator_pick_and_place)
+project(open_manipulator_final)
 
 add_compile_options(-std=c++11)
 
@@ -49,14 +49,14 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(open_manipulator_pick_and_place src/open_manipulator_pick_and_place.cpp)
-add_dependencies(open_manipulator_pick_and_place ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(open_manipulator_pick_and_place ${catkin_LIBRARIES} )
+add_executable(open_manipulator_final src/open_manipulator_final.cpp)
+add_dependencies(open_manipulator_final ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(open_manipulator_final ${catkin_LIBRARIES} )
 
 ################################################################################
 # Install
 ################################################################################
-install(TARGETS open_manipulator_pick_and_place
+install(TARGETS open_manipulator_final
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
