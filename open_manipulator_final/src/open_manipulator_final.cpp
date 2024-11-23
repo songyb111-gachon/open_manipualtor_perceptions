@@ -718,9 +718,9 @@ void OpenManipulatorPickandPlace::printText()
   printf("Pick and Place demonstration!\n");
   printf("-----------------------------\n");
 
-  printf("1 : Home pose\n");
-  printf("2 : Pick and Place demo. start\n");
-  printf("3 : Pick and Place demo. Stop\n");
+  printf("q : Home pose\n");
+  printf("w : Pick and Place demo. start\n");
+  printf("e : Pick and Place demo. Stop\n");
 
   printf("-----------------------------\n");
 
@@ -877,7 +877,7 @@ void OpenManipulatorPickandPlace::printText()
   }
   else
   {
-    printf("No AR marker detected.\n");
+    printf("No AR marker detected. Waiting for marker input...\n");
   }
 }
 
