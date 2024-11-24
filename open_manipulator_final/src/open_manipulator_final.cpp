@@ -149,67 +149,109 @@ void OpenManipulatorPickandPlace::arPoseMarkerCallback(const ar_track_alvar_msgs
 
 void OpenManipulatorPickandPlace::publishCallback(const ros::TimerEvent&)
 {
-  printText();
+    printText();
 
-  // 키 입력 처리
-  if (kbhit())
-  {
-    char input = std::getchar();
-
-    // 숫자 입력 처리
-    if (isdigit(input))
+    // 키 입력 처리
+    if (kbhit())
     {
-      int marker_id = input - '0';  // 입력된 문자 숫자를 정수로 변환
+        char input = std::getchar();  // 첫 번째 입력
 
-      if (mode_state_ == DEMO_START)
-      {
-        if (demo_count_ <= 3) // 집기 마커 설정 단계
+        // 숫자 입력 처리
+        if (isdigit(input))  // 첫 번째 입력이 숫자인 경우
         {
-          pick_marker_id_ = marker_id;
-          printf("Pick Marker ID set to: %d\n", pick_marker_id_);
+            clock_t start_time = clock();  // 입력 타이머 시작
+            while ((clock() - start_time) / CLOCKS_PER_SEC < 2)  // 1초 대기
+            {
+                if (kbhit())  // 두 번째 입력 확인
+                {
+                    char second_input = std::getchar();
+                    if (isdigit(second_input))  // 두 번째 입력도 숫자인 경우
+                    {
+                        int marker_id = (input - '0') * 10 + (second_input - '0');  // 두 자리 숫자 계산
+                        if (marker_id >= 0 && marker_id <= 17)  // 유효한 범위(0~17)인지 확인
+                        {
+                            if (mode_state_ == DEMO_START)
+                            {
+                                if (demo_count_ <= 3) // 집기 마커 설정 단계
+                                {
+                                    pick_marker_id_ = marker_id;
+                                    printf("[INFO] Pick Marker ID set to: %d\n", pick_marker_id_);
+                                }
+                                else if (demo_count_ >= 7) // 놓기 마커 설정 단계
+                                {
+                                    place_marker_id_ = marker_id;
+                                    printf("[INFO] Place Marker ID set to: %d\n", place_marker_id_);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            printf("[WARNING] Invalid marker ID. Please enter a number between 0 and 17.\n");
+                        }
+                        return;  // 두 번째 입력 처리 후 함수 종료
+                    }
+                    else
+                    {
+                        printf("[WARNING] Invalid input detected. Please enter digits only.\n");
+                        return;
+                    }
+                }
+            }
+            // 타이머가 끝나고 두 번째 입력이 없으면 한 자리 숫자로 처리
+            int marker_id = input - '0';
+            printf("[INFO] Single-digit marker ID detected: %d\n", marker_id);
+
+            if (mode_state_ == DEMO_START)
+            {
+                if (demo_count_ <= 3) // 집기 마커 설정 단계
+                {
+                    pick_marker_id_ = marker_id;
+                    printf("[INFO] Pick Marker ID set to: %d\n", pick_marker_id_);
+                }
+                else if (demo_count_ >= 4) // 놓기 마커 설정 단계
+                {
+                    place_marker_id_ = marker_id;
+                    printf("[INFO] Place Marker ID set to: %d\n", place_marker_id_);
+                }
+            }
         }
-        else if (demo_count_ >= 7) // 놓기 마커 설정 단계
+        else
         {
-          place_marker_id_ = marker_id;
-          printf("Place Marker ID set to: %d\n", place_marker_id_);
+            // 기존 키 동작 처리
+            setModeState(input);
         }
-      }
     }
-    else
+
+    // 각 상태 처리
+    if (mode_state_ == HOME_POSE)
     {
-      // 기존 키 동작 처리
-      setModeState(input);
+        // 홈 포즈 처리
+        std::vector<double> joint_angle;
+
+        joint_angle.push_back(0.01);
+        joint_angle.push_back(-0.80);
+        joint_angle.push_back(0.00);
+        joint_angle.push_back(1.90);
+        setJointSpacePath(joint_name_, joint_angle, 2.0);
+
+        std::vector<double> gripper_value;
+        gripper_value.push_back(0.0);
+        setToolControl(gripper_value);
+        mode_state_ = 0;
     }
-  }
-
-  // HOME_POSE 모드 처리
-  if (mode_state_ == HOME_POSE)
-  {
-    std::vector<double> joint_angle;
-
-    joint_angle.push_back(0.01);
-    joint_angle.push_back(-0.80);
-    joint_angle.push_back(0.00);
-    joint_angle.push_back(1.90);
-    setJointSpacePath(joint_name_, joint_angle, 2.0);
-
-    std::vector<double> gripper_value;
-    gripper_value.push_back(0.0);
-    setToolControl(gripper_value);
-    mode_state_ = 0;
-  }
-  // DEMO_START 모드 처리
-  else if (mode_state_ == DEMO_START)
-  {
-    if (!open_manipulator_is_moving_)
-      demoSequence();
-  }
-  // DEMO_STOP 모드 처리
-  else if (mode_state_ == DEMO_STOP)
-  {
-    // No specific actions for DEMO_STOP
-  }
+    else if (mode_state_ == DEMO_START)
+    {
+        // 데모 진행 상태 처리
+        if (!open_manipulator_is_moving_)
+            demoSequence();
+    }
+    else if (mode_state_ == DEMO_STOP)
+    {
+        // 데모 중지 상태 처리
+        printf("[INFO] Demo stopped.\n");
+    }
 }
+
 
 void OpenManipulatorPickandPlace::setModeState(char ch)
 {
@@ -420,7 +462,7 @@ break;
 	}
 	break;
 
-    case 9: // Prompt user to decide next action
+case 9: // Prompt user to decide next action
 {
     printf("\nWhat would you like to do next?\n");
     printf("Press 'p' to pick another object, or 'd' to proceed to demo termination.\n");
@@ -437,24 +479,23 @@ break;
             if (user_input == 'p') // Pick another object
             {
                 demo_count_ = 1;     // Case 1로 설정하여 pick 과정으로 돌아감
-                printf("Returning to pick another object.\n");
+                printf("[INFO] Returning to pick another object.\n");
                 valid_input = true;
             }
             else if (user_input == 'd') // Enter demo termination process
             {
                 demo_count_++;  // 다음 단계 (종료 과정)로 진행
-                printf("Proceeding to demo termination process.\n");
+                printf("[INFO] Proceeding to demo termination process.\n");
                 valid_input = true;
             }
             else
             {
-                printf("Invalid input. Please press 'p' or 'd'.\n");
+                printf("[WARNING] Invalid input. Please press 'p' or 'd'.\n");
             }
         }
     } while (!valid_input);
 }
 break;
-
 
     case 10: //I
     joint_angle.clear();
