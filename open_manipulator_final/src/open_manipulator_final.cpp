@@ -23,7 +23,9 @@ OpenManipulatorPickandPlace::OpenManipulatorPickandPlace()
   priv_node_handle_("~"),
   mode_state_(0),
   demo_count_(0),
-  pick_ar_id_(0)
+  pick_ar_id_(0),
+  pick_marker_id_(-1),   // 초기값: 유효하지 않은 ID
+  place_marker_id_(-1)   // 초기값: 유효하지 않은 ID
 {
   present_joint_angle_.resize(NUM_OF_JOINT_AND_TOOL, 0.0);
   present_kinematic_position_.resize(3, 0.0);
@@ -36,6 +38,7 @@ OpenManipulatorPickandPlace::OpenManipulatorPickandPlace()
   initServiceClient();
   initSubscribe();
 }
+
 
 OpenManipulatorPickandPlace::~OpenManipulatorPickandPlace()
 {
@@ -165,16 +168,47 @@ void OpenManipulatorPickandPlace::arPoseMarkerCallback(const ar_track_alvar_msgs
 void OpenManipulatorPickandPlace::publishCallback(const ros::TimerEvent&)
 {
   printText();
-  if (kbhit()) setModeState(std::getchar());
 
+  // 키 입력 처리
+  if (kbhit())
+  {
+    char input = std::getchar();
+
+    // 숫자 입력 처리
+    if (isdigit(input))
+    {
+      int marker_id = input - '0';  // 입력된 문자 숫자를 정수로 변환
+
+      if (mode_state_ == DEMO_START)
+      {
+        if (demo_count_ <= 3) // 집기 마커 설정 단계
+        {
+          pick_marker_id_ = marker_id;
+          printf("Pick Marker ID set to: %d\n", pick_marker_id_);
+        }
+        else if (demo_count_ >= 7) // 놓기 마커 설정 단계
+        {
+          place_marker_id_ = marker_id;
+          printf("Place Marker ID set to: %d\n", place_marker_id_);
+        }
+      }
+    }
+    else
+    {
+      // 기존 키 동작 처리
+      setModeState(input);
+    }
+  }
+
+  // HOME_POSE 모드 처리
   if (mode_state_ == HOME_POSE)
   {
     std::vector<double> joint_angle;
 
-    joint_angle.push_back( 0.01);
+    joint_angle.push_back(0.01);
     joint_angle.push_back(-0.80);
-    joint_angle.push_back( 0.00);
-    joint_angle.push_back( 1.90);
+    joint_angle.push_back(0.00);
+    joint_angle.push_back(1.90);
     setJointSpacePath(joint_name_, joint_angle, 2.0);
 
     std::vector<double> gripper_value;
@@ -182,15 +216,19 @@ void OpenManipulatorPickandPlace::publishCallback(const ros::TimerEvent&)
     setToolControl(gripper_value);
     mode_state_ = 0;
   }
+  // DEMO_START 모드 처리
   else if (mode_state_ == DEMO_START)
   {
-    if (!open_manipulator_is_moving_) demoSequence();
+    if (!open_manipulator_is_moving_)
+      demoSequence();
   }
+  // DEMO_STOP 모드 처리
   else if (mode_state_ == DEMO_STOP)
   {
-
+    // No specific actions for DEMO_STOP
   }
 }
+
 void OpenManipulatorPickandPlace::setModeState(char ch)
 {
   if (ch == 'q')
@@ -238,40 +276,62 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_ ++;
     break;
 
-    case 3: // pick the box 사용자가 입력한 번호의 마커를
+    case 3: // pick the box 사용자가 입력한 번호의 마커를 집음
+{
+  bool marker_found = false;
+  int search_attempts = 0; // 검색 시도 횟수
+
+  while (!marker_found && search_attempts < 8) // 최대 8번 시도
+  {
+    for (int i = 0; i < ar_marker_pose.size(); i++)
     {
-      bool marker_found = false;
-      kinematics_position.clear();
-      kinematics_orientation.clear();
-      for (int i = 0; i < ar_marker_pose.size(); i++)
+      if (ar_marker_pose.at(i).id == pick_marker_id_) // 사용자가 설정한 pick_marker_id_
       {
-        if (ar_marker_pose.at(i).id == 0) // ID 0 마커 확인
-        {
-          marker_found = true;
-          // X, Y, Z 값을 설정
-          kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
-          kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
-          kinematics_position.push_back(0.033);                                  // Z 좌표 고정
+        marker_found = true;
 
-          // 오리엔테이션 설정
-          kinematics_orientation.push_back(0.74); // w 값
-          kinematics_orientation.push_back(0.00); // x 값
-          kinematics_orientation.push_back(0.66); // y 값
-          kinematics_orientation.push_back(0.00); // z 값
+        // X, Y, Z 값 설정
+        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
+        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
+        kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
-          setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
-          demo_count_++; // 다음 단계로 진행
-          break; // 찾았으므로 반복문 종료
-        }
-      }
+        // 오리엔테이션 설정
+        kinematics_orientation.push_back(0.74); // w 값
+        kinematics_orientation.push_back(0.00); // x 값
+        kinematics_orientation.push_back(0.66); // y 값
+        kinematics_orientation.push_back(0.00); // z 값
 
-      if (!marker_found)
-      {
-        printf("Marker 0 not detected.\n");
-        demo_count_ = 1;
+        setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
+        demo_count_++; // 다음 단계로 진행
+        break;
       }
     }
-  break;
+
+    if (!marker_found)
+    {
+      // 마커를 찾지 못했을 경우 Base joint 변경
+      printf("Pick Marker ID %d not detected. Adjusting base joint... (Attempt %d)\n", pick_marker_id_, search_attempts + 1);
+
+      // Base joint (joint1) 값을 회전하며 탐색
+      std::vector<double> search_joint_angle;
+      search_joint_angle.push_back(-1.60 + 0.4 * search_attempts); // Base joint 좌우로 회전
+      search_joint_angle.push_back(-0.80);                        // Shoulder joint
+      search_joint_angle.push_back(0.00);                         // Elbow joint
+      search_joint_angle.push_back(1.90);                         // Wrist joint
+      setJointSpacePath(joint_name_, search_joint_angle, 2.0);   // 카메라 위치 조정
+
+      ros::Duration(3.0).sleep(); // 3초 대기
+      search_attempts++;          // 시도 횟수 증가
+    }
+  }
+
+  if (!marker_found) // 최대 시도 후에도 찾지 못했을 경우
+  {
+    printf("Pick Marker ID %d could not be found after multiple attempts.\n", pick_marker_id_);
+    demo_count_ = 1; // 초기 단계로 돌아감
+  }
+}
+break;
+
 
   case 4: // wait & grip
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
@@ -291,53 +351,65 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-  case 6: // place pose
-    joint_angle.clear();
-    joint_angle.push_back( 1.57);
-    joint_angle.push_back(-0.21);
-    joint_angle.push_back(-0.15);
-    joint_angle.push_back( 1.89);
-    setJointSpacePath(joint_name_, joint_angle, 2.0);
-    demo_count_++;
-    break;
+    case 6: // place the box 사용자가 입력한 마커가 있는 곳에 놓음
+{
+  bool marker_found = false;
+  int search_attempts = 0; // 검색 시도 횟수
 
-    case 7: // place the box 사용자가 입력한 마커가 있는 곳에
+  while (!marker_found && search_attempts < 8) // 최대 8번 시도
+  {
+    for (int i = 0; i < ar_marker_pose.size(); i++)
     {
-      bool marker_found = false;
-      kinematics_position.clear();
-      kinematics_orientation.clear();
-      for (int i = 0; i < ar_marker_pose.size(); i++)
+      if (ar_marker_pose.at(i).id == place_marker_id_) // 사용자가 설정한 place_marker_id_
       {
-        if (ar_marker_pose.at(i).id == 0) // ID 0 마커 확인
-        {
-          marker_found = true;
-          // X, Y, Z 값을 설정
-          kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
-          kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
-          kinematics_position.push_back(0.033);                                  // Z 좌표 고정
+        marker_found = true;
 
-          // 오리엔테이션 설정
-          kinematics_orientation.push_back(0.74); // w 값
-          kinematics_orientation.push_back(0.00); // x 값
-          kinematics_orientation.push_back(0.66); // y 값
-          kinematics_orientation.push_back(0.00); // z 값
+        // X, Y, Z 값 설정
+        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
+        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
+        kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
-          setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
-          demo_count_++; // 다음 단계로 진행
-          break; // 찾았으므로 반복문 종료
-        }
-      }
+        // 오리엔테이션 설정
+        kinematics_orientation.push_back(0.74); // w 값
+        kinematics_orientation.push_back(0.00); // x 값
+        kinematics_orientation.push_back(0.66); // y 값
+        kinematics_orientation.push_back(0.00); // z 값
 
-      if (!marker_found)
-      {
-        printf("Marker 0 not detected.\n");
-        demo_count_ = 6;
+        setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
+        demo_count_++; // 다음 단계로 진행
+        break;
       }
     }
-  break;
+
+    if (!marker_found)
+    {
+      // 마커를 찾지 못했을 경우 Base joint 변경
+      printf("Place Marker ID %d not detected. Adjusting base joint... (Attempt %d)\n", place_marker_id_, search_attempts + 1);
+
+      // Base joint (joint1) 값을 회전하며 탐색
+      std::vector<double> search_joint_angle;
+      search_joint_angle.push_back(-1.60 + 0.4 * search_attempts); // Base joint 좌우로 회전
+      search_joint_angle.push_back(-0.80);                        // Shoulder joint
+      search_joint_angle.push_back(0.00);                         // Elbow joint
+      search_joint_angle.push_back(1.90);                         // Wrist joint
+      setJointSpacePath(joint_name_, search_joint_angle, 2.0);   // 카메라 위치 조정
+
+      ros::Duration(3.0).sleep(); // 1초 대기
+      search_attempts++;          // 시도 횟수 증가
+    }
+  }
+
+  if (!marker_found) // 최대 시도 후에도 찾지 못했을 경우
+  {
+    printf("Place Marker ID %d could not be found after multiple attempts.\n", place_marker_id_);
+    demo_count_ = 6; // 놓기 단계로 돌아감
+  }
+}
+break;
 
 
-  case 8: // wait & place
+
+  case 7: // wait & place
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
     gripper_value.push_back(0.010);
@@ -345,19 +417,62 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-  case 9: // move up after place the box
+
+  case 8: // move up after place the box
     kinematics_position.clear();
     kinematics_orientation.clear();
-    kinematics_position.push_back(0.015); // X 좌표
-    kinematics_position.push_back(0.102); // Y 좌표
-    kinematics_position.push_back(0.170);
-    kinematics_orientation.push_back(0.74);
-    kinematics_orientation.push_back(0.00);
-    kinematics_orientation.push_back(0.66);
-    kinematics_orientation.push_back(0.00);
-    setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
+
+    // case 6과 동일한 X, Y 값 설정
+    kinematics_position.push_back(ar_marker_pose.at(place_marker_id_).position[0] + 0.005); // X 좌표
+    kinematics_position.push_back(ar_marker_pose.at(place_marker_id_).position[1]);        // Y 좌표
+    kinematics_position.push_back(0.170);                                                 // Z 좌표 (상승)
+
+    // 기존 오리엔테이션 유지
+    kinematics_orientation.push_back(0.74); // w 값
+    kinematics_orientation.push_back(0.00); // x 값
+    kinematics_orientation.push_back(0.66); // y 값
+    kinematics_orientation.push_back(0.00); // z 값
+
+    setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0); // 위치로 이동
     demo_count_++;
-    break;
+	}
+	break;
+
+    case 9: // Prompt user to decide next action
+{
+    printf("\nWhat would you like to do next?\n");
+    printf("Press 'p' to pick another object, or 'd' to proceed to demo termination.\n");
+
+    char user_input;
+    bool valid_input = false;
+
+    // 유효한 입력을 받을 때까지 대기
+    do
+    {
+        if (kbhit())
+        {
+            user_input = std::getchar();
+            if (user_input == 'p') // Pick another object
+            {
+                demo_count_ = 1;     // Case 1로 설정하여 pick 과정으로 돌아감
+                printf("Returning to pick another object.\n");
+                valid_input = true;
+            }
+            else if (user_input == 'd') // Enter demo termination process
+            {
+                demo_count_++;  // 다음 단계 (종료 과정)로 진행
+                printf("Proceeding to demo termination process.\n");
+                valid_input = true;
+            }
+            else
+            {
+                printf("Invalid input. Please press 'p' or 'd'.\n");
+            }
+        }
+    } while (!valid_input);
+}
+break;
+
 
     case 10: //I
     joint_angle.clear();
@@ -522,98 +637,44 @@ void OpenManipulatorPickandPlace::printText()
       printf("Moving up after placing\n");
       break;
     case 10:
-      printf("Returning to initial pose\n");
-      break;
-    case 11:
-      printf("Preparing for next marker\n");
-      break;
-    case 12:
-      printf("Detecting AR marker for pick (Marker ID: 1)\n");
-      break;
-    case 13:
-      printf("Grip preparation for Marker ID: 1\n");
-      break;
-    case 14:
-      printf("Returning to initial pose after pick (Marker ID: 1)\n");
-      break;
-    case 15:
-      printf("Positioning to place box (Marker ID: 1)\n");
-      break;
-    case 16:
-      printf("Placing the box (Marker ID: 1)\n");
-      break;
-    case 17:
-      printf("Opening gripper to release box\n");
-      break;
-    case 18:
-      printf("Moving up after placing the box\n");
-      break;
-    case 19:
-      printf("Returning to initial pose\n");
-      break;
-    case 20:
-      printf("Preparing for next marker\n");
-      break;
-    case 21:
-      printf("Detecting AR marker for pick (Marker ID: 2)\n");
-      break;
-    case 22:
-      printf("Grip preparation for Marker ID: 2\n");
-      break;
-    case 23:
-      printf("Returning to initial pose after pick (Marker ID: 2)\n");
-      break;
-    case 24:
-      printf("Positioning to place box (Marker ID: 2)\n");
-      break;
-    case 25:
-      printf("Placing the box (Marker ID: 2)\n");
-      break;
-    case 26:
-      printf("Opening gripper to release box\n");
-      break;
-    case 27:
-      printf("Moving up after placing the box\n");
-      break;
-    case 28:
-      printf("Returning to home pose\n");
-      break;
-    case 29:
       printf("I\n");
       break;
-    case 30:
+    case 11:
       printf("wait\n");
       break;
-    case 31:
+    case 12:
       printf("R\n");
       break;
-    case 32:
+    case 13:
       printf("wait\n");
       break;
-    case 33:
+    case 14:
       printf("wait\n");
       break;
-    case 34:
+    case 15:
       printf("A\n");
       break;
-    case 35:
+    case 16:
       printf("wait\n");
       break;
-    case 36:
+    case 17:
       printf("S\n");
       break;
-    case 37:
+    case 18:
       printf("wait\n");
       break;
-    case 38:
+    case 19:
       printf("C\n");
       break;
-    case 39:
+    case 20:
+        printf("C\n");
+    break;
+    case 21:
       printf("Returning to home pose\n");
-      break;
+    break;
     default:
       printf("Unknown demo state\n");
-      break;
+    break;
     }
   }
   else if (mode_state_ == DEMO_STOP)
