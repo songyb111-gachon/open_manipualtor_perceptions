@@ -211,35 +211,6 @@ void OpenManipulatorPickandPlace::moveHomePose()
     mode_state_ = 0;
 }
 
-    if (mode_state_ == HOME_POSE)
-    {
-        // 홈 포즈 처리
-        std::vector<double> joint_angle;
-
-        joint_angle.push_back(0.01);
-        joint_angle.push_back(-0.80);
-        joint_angle.push_back(0.00);
-        joint_angle.push_back(1.90);
-        setJointSpacePath(joint_name_, joint_angle, 2.0);
-
-        std::vector<double> gripper_value;
-        gripper_value.push_back(0.0);
-        setToolControl(gripper_value);
-        mode_state_ = 0;
-    }
-    else if (mode_state_ == DEMO_START)
-    {
-        // 데모 진행 상태 처리
-        if (!open_manipulator_is_moving_)
-            demoSequence();
-    }
-    else if (mode_state_ == DEMO_STOP)
-    {
-        // 데모 중지 상태 처리
-        printf("[INFO] Demo stopped.\n");
-    }
-}
-
 
 void OpenManipulatorPickandPlace::setModeState(char ch)
 {
