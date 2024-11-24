@@ -616,42 +616,43 @@ void OpenManipulatorPickandPlace::printText()
       printf("Placing the box\n");
       break;
     case 9:
+    case 10:
       printf("Moving up after placing\n");
       break;
-    case 10:
+    case 11:
       printf("I\n");
       break;
-    case 11:
-      printf("wait\n");
-      break;
     case 12:
-      printf("R\n");
+      printf("wait\n");
       break;
     case 13:
-      printf("wait\n");
+      printf("R\n");
       break;
     case 14:
       printf("wait\n");
       break;
     case 15:
-      printf("A\n");
+      printf("wait\n");
       break;
     case 16:
-      printf("wait\n");
+      printf("A\n");
       break;
     case 17:
-      printf("S\n");
-      break;
-    case 18:
       printf("wait\n");
       break;
+    case 18:
+      printf("S\n");
+      break;
     case 19:
-      printf("C\n");
+      printf("wait\n");
       break;
     case 20:
+      printf("C\n");
+      break;
+    case 21:
         printf("C\n");
     break;
-    case 21:
+    case 22:
       printf("Returning to home pose\n");
     break;
     default:
