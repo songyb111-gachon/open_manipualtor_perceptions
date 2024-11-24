@@ -214,13 +214,14 @@ void OpenManipulatorPickandPlace::demoSequence()
   switch (demo_count_)
   {
     case 0: // home pose
-      joint_angle.push_back( 0.00);
+    joint_angle.push_back( 0.00);
     joint_angle.push_back(-1.05);
     joint_angle.push_back( 0.35);
     joint_angle.push_back( 0.70);
     setJointSpacePath(joint_name_, joint_angle, 2.0);
     demo_count_ ++;
     break;
+
     case 1: // initial pose
       joint_angle.push_back( 0.01);
     joint_angle.push_back(-0.80);
@@ -229,6 +230,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     setJointSpacePath(joint_name_, joint_angle, 2.0);
     demo_count_ ++;
     break;
+
     case 2: // wait & open the gripper
       setJointSpacePath(joint_name_, present_joint_angle_, 3.0);
     gripper_value.push_back(0.010);
@@ -236,7 +238,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_ ++;
     break;
 
-    case 3: // pick the box for marker 0
+    case 3: // pick the box 사용자가 입력한 번호의 마커를
     {
       bool marker_found = false;
       kinematics_position.clear();
@@ -299,24 +301,40 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 7: // place the box
-    kinematics_position.clear();
-    kinematics_orientation.clear();
+    case 7: // place the box 사용자가 입력한 마커가 있는 곳에
+    {
+      bool marker_found = false;
+      kinematics_position.clear();
+      kinematics_orientation.clear();
+      for (int i = 0; i < ar_marker_pose.size(); i++)
+      {
+        if (ar_marker_pose.at(i).id == 0) // ID 0 마커 확인
+        {
+          marker_found = true;
+          // X, Y, Z 값을 설정
+          kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
+          kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
+          kinematics_position.push_back(0.033);                                  // Z 좌표 고정
 
-    // 수정된 위치 값
-    kinematics_position.push_back(0.015); // X 좌표
-    kinematics_position.push_back(0.123); // Y 좌표
-    kinematics_position.push_back(0.065); // Z 좌표
+          // 오리엔테이션 설정
+          kinematics_orientation.push_back(0.74); // w 값
+          kinematics_orientation.push_back(0.00); // x 값
+          kinematics_orientation.push_back(0.66); // y 값
+          kinematics_orientation.push_back(0.00); // z 값
 
-    // 기존 오리엔테이션 값 유지
-    kinematics_orientation.push_back(0.74); // w 값
-    kinematics_orientation.push_back(0.00); // x 값
-    kinematics_orientation.push_back(0.66); // y 값
-    kinematics_orientation.push_back(0.00); // z 값
+          setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
+          demo_count_++; // 다음 단계로 진행
+          break; // 찾았으므로 반복문 종료
+        }
+      }
 
-    setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
-    demo_count_++;
-    break;
+      if (!marker_found)
+      {
+        printf("Marker 0 not detected.\n");
+        demo_count_ = 6;
+      }
+    }
+  break;
 
 
   case 8: // wait & place
@@ -341,263 +359,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-  case 10: // initial pose
-    joint_angle.clear();
-    joint_angle.push_back( 0.01);
-    joint_angle.push_back(-0.80);
-    joint_angle.push_back( 0.00);
-    joint_angle.push_back( 1.90);
-    setJointSpacePath(joint_name_, joint_angle, 2.0);
-    demo_count_++;
-    break;
-
-  case 11: // wait & open the gripper
-    setJointSpacePath(joint_name_, present_joint_angle_, 3.0);
-    gripper_value.clear();
-    gripper_value.push_back(0.010);
-    setToolControl(gripper_value);
-    demo_count_++;
-    break;
-
-  case 12: // pick the box for marker 1
-  {
-    bool marker_found = false;
-    kinematics_position.clear();
-    kinematics_orientation.clear();
-    for (int i = 0; i < ar_marker_pose.size(); i++)
-    {
-      if (ar_marker_pose.at(i).id == 1)
-      {
-        marker_found = true;
-        // X, Y, Z 값을 설정
-        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
-        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
-        kinematics_position.push_back(0.033);                                  // Z 좌표 고정
-
-        // 오리엔테이션 설정
-        kinematics_orientation.push_back(0.74); // w 값
-        kinematics_orientation.push_back(0.00); // x 값
-        kinematics_orientation.push_back(0.66); // y 값
-        kinematics_orientation.push_back(0.00); // z 값
-
-        setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
-        demo_count_++; // 다음 단계로 진행
-        break; // 찾았으므로 반복문 종료
-      }
-    }
-
-    if (!marker_found)
-    {
-      printf("Marker 2 not detected.\n");
-      demo_count_ = 10;
-    }
-  }
-  break;
-
-  case 13: // wait & grip
-    setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
-    gripper_value.clear();
-    gripper_value.push_back(-0.008);
-    setToolControl(gripper_value);
-    demo_count_++;
-    break;
-
-  case 14: // initial pose
-    joint_angle.clear();
-    joint_angle.push_back( 0.01);
-    joint_angle.push_back(-0.80);
-    joint_angle.push_back( 0.00);
-    joint_angle.push_back( 1.90);
-    setJointSpacePath(joint_name_, joint_angle, 2.0);
-    demo_count_++;
-    break;
-
-  case 15: // place pose
-    joint_angle.clear();
-    joint_angle.push_back( 1.57);
-    joint_angle.push_back(-0.21);
-    joint_angle.push_back(-0.15);
-    joint_angle.push_back( 1.89);
-    setJointSpacePath(joint_name_, joint_angle, 2.0);
-    demo_count_++;
-    break;
-
-  case 16: // place the box
-    kinematics_position.clear();
-    kinematics_orientation.clear();
-
-    // 수정된 위치 값
-    kinematics_position.push_back(0.015); // X 좌표
-    kinematics_position.push_back(0.107); // Y 좌표
-    kinematics_position.push_back(0.088); // Z 좌표
-
-    // 기존 오리엔테이션 값 유지
-    kinematics_orientation.push_back(0.74); // w 값
-    kinematics_orientation.push_back(0.00); // x 값
-    kinematics_orientation.push_back(0.66); // y 값
-    kinematics_orientation.push_back(0.00); // z 값
-
-    setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
-    demo_count_++;
-
-    break;
-
-  case 17: // wait & place
-    setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
-    gripper_value.clear();
-    gripper_value.push_back(0.010);
-    setToolControl(gripper_value);
-    demo_count_++;
-    break;
-
-  case 18: // move up after place the box
-    kinematics_position.clear();
-    kinematics_orientation.clear();
-    kinematics_position.push_back(present_kinematic_position_.at(0));
-    kinematics_position.push_back(present_kinematic_position_.at(1));
-    kinematics_position.push_back(0.170);
-    kinematics_orientation.push_back(0.74);
-    kinematics_orientation.push_back(0.00);
-    kinematics_orientation.push_back(0.66);
-    kinematics_orientation.push_back(0.00);
-    setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
-    demo_count_++;
-    break;
-
-  case 19: // initial pose
-    joint_angle.clear();
-    joint_angle.push_back( 0.01);
-    joint_angle.push_back(-0.80);
-    joint_angle.push_back( 0.00);
-    joint_angle.push_back( 1.90);
-    setJointSpacePath(joint_name_, joint_angle, 2.0);
-    demo_count_++;
-    break;
-
-  case 20: // wait & open the gripper
-    setJointSpacePath(joint_name_, present_joint_angle_, 3.0);
-    gripper_value.clear();
-    gripper_value.push_back(0.010);
-    setToolControl(gripper_value);
-    demo_count_++;
-    break;
-
-  case 21: // pick the box for marker 2
-  {
-    bool marker_found = false;
-    kinematics_position.clear();
-    kinematics_orientation.clear();
-    for (int i = 0; i < ar_marker_pose.size(); i++)
-    {
-      if (ar_marker_pose.at(i).id == 2)
-      {
-        marker_found = true;
-        // X, Y, Z 값을 설정
-        kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
-        kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
-        kinematics_position.push_back(0.033);                                  // Z 좌표 고정
-
-        // 오리엔테이션 설정
-        kinematics_orientation.push_back(0.74); // w 값
-        kinematics_orientation.push_back(0.00); // x 값
-        kinematics_orientation.push_back(0.66); // y 값
-        kinematics_orientation.push_back(0.00); // z 값
-
-        setTaskSpacePath(kinematics_position, kinematics_orientation, 3.0);
-        demo_count_++; // 다음 단계로 진행
-        break; // 찾았으므로 반복문 종료
-      }
-    }
-
-    if (!marker_found)
-    {
-      printf("Marker 3 not detected.\n");
-      demo_count_ = 19;
-    }
-  }
-  break;
-
-  case 22: // wait & grip
-    setJointSpacePath(joint_name_, present_joint_angle_, 2.0);
-    gripper_value.clear();
-    gripper_value.push_back(-0.008);
-    setToolControl(gripper_value);
-    demo_count_++;
-    break;
-
-  case 23: // initial pose
-    joint_angle.clear();
-    joint_angle.push_back( 0.01);
-    joint_angle.push_back(-0.80);
-    joint_angle.push_back( 0.00);
-    joint_angle.push_back( 1.90);
-    setJointSpacePath(joint_name_, joint_angle, 2.0);
-    demo_count_++;
-    break;
-
-  case 24: // place pose
-    joint_angle.clear();
-    joint_angle.push_back( 1.57);
-    joint_angle.push_back(-0.21);
-    joint_angle.push_back(-0.15);
-    joint_angle.push_back( 1.89);
-    setJointSpacePath(joint_name_, joint_angle, 2.0);
-    demo_count_++;
-    break;
-
-  case 25: // place the box
-    kinematics_position.clear();
-    kinematics_orientation.clear();
-
-    // 수정된 위치 값
-    kinematics_position.push_back(0.019); // X 좌표
-    kinematics_position.push_back(0.095); // Y 좌표
-    kinematics_position.push_back(0.123); // Z 좌표
-
-    // 기존 오리엔테이션 값 유지
-    kinematics_orientation.push_back(0.74); // w 값
-    kinematics_orientation.push_back(0.00); // x 값
-    kinematics_orientation.push_back(0.66); // y 값
-    kinematics_orientation.push_back(0.00); // z 값
-
-    setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
-    demo_count_++;
-
-    break;
-
-  case 26: // wait & place
-    setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
-    gripper_value.clear();
-    gripper_value.push_back(0.010);
-    setToolControl(gripper_value);
-    demo_count_++;
-    break;
-
-  case 27: // move up after place the box
-    kinematics_position.clear();
-    kinematics_orientation.clear();
-    kinematics_position.push_back(present_kinematic_position_.at(0));
-    kinematics_position.push_back(present_kinematic_position_.at(1));
-    kinematics_position.push_back(0.180);
-    kinematics_orientation.push_back(0.74);
-    kinematics_orientation.push_back(0.00);
-    kinematics_orientation.push_back(0.66);
-    kinematics_orientation.push_back(0.00);
-    setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0);
-    demo_count_++;
-    break;
-
-  case 28: // home pose
-    joint_angle.clear();
-    joint_angle.push_back( 0.00);
-    joint_angle.push_back(-1.05);
-    joint_angle.push_back( 0.35);
-    joint_angle.push_back( 0.70);
-    setJointSpacePath(joint_name_, joint_angle, 0.01);
-    demo_count_++;
-    break;
-
-    case 29: //I
+    case 10: //I
     joint_angle.clear();
     joint_angle.push_back( -0.063);
     joint_angle.push_back( 0.061);
@@ -607,7 +369,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 30: // wait & place
+    case 11: // wait & place
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
     gripper_value.push_back(0.010);
@@ -615,7 +377,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 31: //R
+    case 12: //R
     joint_angle.clear();
     joint_angle.push_back( -0.015);
     joint_angle.push_back( 0.030);
@@ -625,7 +387,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 32: // wait & place
+    case 13: // wait & place
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
     gripper_value.push_back(0.010);
@@ -633,7 +395,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 33: //임시
+    case 14: //임시
     joint_angle.clear();
     joint_angle.push_back( 0.00);
     joint_angle.push_back(-1.05);
@@ -643,7 +405,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 34: //A
+    case 15: //A
     joint_angle.clear();
     joint_angle.push_back( -0.032);
     joint_angle.push_back( 0.078);
@@ -653,7 +415,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 35: // wait & place
+    case 16: // wait & place
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
     gripper_value.push_back(0.010);
@@ -661,7 +423,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 36: //S
+    case 17: //S
     joint_angle.clear();
     joint_angle.push_back( 0.000);
     joint_angle.push_back( -1.085);
@@ -671,7 +433,15 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 37: //C
+    case 18: // wait & place
+    setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
+    gripper_value.clear();
+    gripper_value.push_back(0.010);
+    setToolControl(gripper_value);
+    demo_count_++;
+    break;
+
+    case 19: //C
     joint_angle.clear();
     joint_angle.push_back( -0.031);
     joint_angle.push_back( -1.235);
@@ -681,7 +451,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 38: // wait & place
+    case 20: // wait & place
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
     gripper_value.push_back(0.010);
@@ -689,7 +459,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 39: // home pose
+    case 21: // home pose
     joint_angle.clear();
     joint_angle.push_back( 0.00);
     joint_angle.push_back(-1.05);

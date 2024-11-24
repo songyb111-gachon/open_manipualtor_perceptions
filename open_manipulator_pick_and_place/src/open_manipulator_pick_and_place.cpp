@@ -671,7 +671,15 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 37: //C
+    case 37: // wait & place
+     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
+    gripper_value.clear();
+    gripper_value.push_back(0.010);
+    setToolControl(gripper_value);
+    demo_count_++;
+    break;
+
+    case 38: //C
     joint_angle.clear();
     joint_angle.push_back( -0.031);
     joint_angle.push_back( -1.235);
@@ -681,7 +689,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 38: // wait & place
+    case 39: // wait & place
     setJointSpacePath(joint_name_, present_joint_angle_, 1.0);
     gripper_value.clear();
     gripper_value.push_back(0.010);
@@ -689,7 +697,7 @@ void OpenManipulatorPickandPlace::demoSequence()
     demo_count_++;
     break;
 
-    case 39: // home pose
+    case 40: // home pose
     joint_angle.clear();
     joint_angle.push_back( 0.00);
     joint_angle.push_back(-1.05);
@@ -839,6 +847,9 @@ void OpenManipulatorPickandPlace::printText()
       printf("C\n");
       break;
     case 39:
+        printf("C\n");
+    break;
+    case 40:
       printf("Returning to home pose\n");
       break;
     default:
