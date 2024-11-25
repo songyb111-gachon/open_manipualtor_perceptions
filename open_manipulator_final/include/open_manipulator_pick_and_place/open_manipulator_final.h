@@ -74,7 +74,6 @@ class OpenManipulatorPickandPlace
   void publishCallback(const ros::TimerEvent&);
   void setModeState(char ch);
   void demoSequence();
-  void processDigitInput(char first_input);
 
 
   void printText();
