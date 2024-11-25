@@ -350,7 +350,7 @@ break;
         // X, Y, Z 값 설정
         kinematics_position.push_back(ar_marker_pose.at(i).position[0] + 0.005); // X 좌표
         kinematics_position.push_back(ar_marker_pose.at(i).position[1]);        // Y 좌표
-        kinematics_position.push_back(0.033);                                  // Z 좌표 고정
+        kinematics_position.push_back(0.069);                                  // Z 좌표 고정
 
         // 오리엔테이션 설정
         kinematics_orientation.push_back(0.74); // w 값
@@ -405,9 +405,9 @@ break;
     kinematics_position.clear();
     kinematics_orientation.clear();
 
-    // case 6과 동일한 X, Y 값 설정
-    kinematics_position.push_back(ar_marker_pose.at(place_marker_id_).position[0] + 0.005); // X 좌표
-    kinematics_position.push_back(ar_marker_pose.at(place_marker_id_).position[1]);        // Y 좌표
+
+    kinematics_position.push_back(ar_marker_pose.at(place_marker_id_).position[0] + 0.030); // X 좌표
+    kinematics_position.push_back(ar_marker_pose.at(place_marker_id_).position[1] + 0.030);        // Y 좌표
     kinematics_position.push_back(0.170);                                                 // Z 좌표 (상승)
 
     // 기존 오리엔테이션 유지
