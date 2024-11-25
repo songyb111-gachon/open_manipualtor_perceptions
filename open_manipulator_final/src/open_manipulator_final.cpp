@@ -418,7 +418,6 @@ break;
 
     setTaskSpacePath(kinematics_position, kinematics_orientation, 2.0); // 위치로 이동
     demo_count_++;
-	}
 	break;
 
 case 9: // Prompt user to decide next action
@@ -426,35 +425,34 @@ case 9: // Prompt user to decide next action
     printf("\nWhat would you like to do next?\n");
     printf("Press 'p' to pick another object, or 'd' to proceed to demo termination.\n");
 
-    char user_input;
-    bool valid_input = false;
-
-    // 유효한 입력을 받을 때까지 대기
-    do
+    char user_input = '\0';  // 초기화
+    while (true) // 유효한 입력을 받을 때까지 무한 루프
     {
-        if (kbhit())
+        if (kbhit()) // 키 입력 대기
         {
             user_input = std::getchar();
             if (user_input == 'p') // Pick another object
             {
-                demo_count_ = 1;     // Case 1로 설정하여 pick 과정으로 돌아감
+                demo_count_ = 1; // Case 1로 설정하여 pick 과정으로 돌아감
                 printf("[INFO] Returning to pick another object.\n");
-                valid_input = true;
+                break; // 루프 종료
             }
             else if (user_input == 'd') // Enter demo termination process
             {
-                demo_count_++;  // 다음 단계 (종료 과정)로 진행
+                demo_count_++; // 다음 단계(종료 과정)로 진행
                 printf("[INFO] Proceeding to demo termination process.\n");
-                valid_input = true;
+                break; // 루프 종료
             }
             else
             {
                 printf("[WARNING] Invalid input. Please press 'p' or 'd'.\n");
             }
         }
-    } while (!valid_input);
+        ros::Duration(0.1).sleep(); // ROS 노드가 응답을 유지하도록 100ms 대기
+    }
+    break;
 }
-break;
+
 
     case 10: //I
     joint_angle.clear();

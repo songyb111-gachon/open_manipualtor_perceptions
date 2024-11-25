@@ -1,5 +1,5 @@
-﻿#ifndef OPEN_MANIPULATOR_final_H
-#define OPEN_MANIPULATOR_final_H
+﻿#ifndef OPEN_MANIPULATOR_FINAL_H
+#define OPEN_MANIPULATOR_FINAL_H
 
 #include <ros/ros.h>
 #include <termios.h>
@@ -62,14 +62,20 @@ class OpenManipulatorPickandPlace
   void kinematicsPoseCallback(const open_manipulator_msgs::KinematicsPose::ConstPtr &msg);
   void jointStatesCallback(const sensor_msgs::JointState::ConstPtr &msg);
   void arPoseMarkerCallback(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr &msg);
+  void processDigitInput(char first_input);
+  void moveHomePose();
+
 
   bool setJointSpacePath(std::vector<std::string> joint_name, std::vector<double> joint_angle, double path_time);
   bool setToolControl(std::vector<double> joint_angle);
-  bool setTaskSpacePath(std::vector<double> kinematics_pose, std::vector<double> kienmatics_orientation, double path_time);
+  bool setTaskSpacePath(std::vector<double> kinematics_pose, std::vector<double> kinematics_orientation, double path_time);
+
 
   void publishCallback(const ros::TimerEvent&);
   void setModeState(char ch);
   void demoSequence();
+  void processDigitInput(char first_input);
+
 
   void printText();
   bool kbhit();
